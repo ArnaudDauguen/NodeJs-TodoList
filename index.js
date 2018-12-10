@@ -1,9 +1,9 @@
-const db = require('sqlite')
-const express = require('express')
-const api = express()
-api.set('views', './views')
-api.set('view engine', 'hbs')
-const bodyParser = require('body-parser')
+const db = require('sqlite');
+const express = require('express');
+const api = express();
+api.set('view engine', 'hbs');
+api.set('views', __dirname + '/views');
+const bodyParser = require('body-parser');
 
 db.open('api.db').then(() => {
   Promise.all([
