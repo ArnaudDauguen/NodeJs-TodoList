@@ -5,6 +5,15 @@ const _ = require('lodash');
 
 let username = "Toi";
 
+//GET adding TODO
+//TODO
+router.get('/add', (req, res) => { // need a VIEW
+    res.render("form_todo", {
+    title: "Add a todo",
+    method: "POST"
+  })
+})
+
 
 // GET all TODOS
 //DONE
@@ -39,22 +48,6 @@ router.get('/', (req, res) => {
   });
   
 });
-
-
-
-//GET adding TODO
-//TODO
-router.get('/add', (req, res) => { // need a VIEW
-  console.log(req)
-  if (!req.body || (req.body && (!req.body.name || !req.body.completion))){
-    return res.status(404).send('NOT FOUND');
-  }
-
-  Todos.create(req.body).then((todo) => res.json(todo)).catch((err) => {
-    return res.status(404).send(err);
-  });
-});
-
 
 
 //GET editing TODO
@@ -106,14 +99,20 @@ router.get('/:id', (req, res) => { // need a VIEW
 
 
 // add a new todo
-//TODO
+//DONE
 router.post('/', (req, res) => { // need a VIEW
-  console.log(req)
-  if (!req.body || (req.body && (!req.body.name || !req.body.completion))){
-    return res.status(404).send('NOT FOUND');
-  }
-
-  Todos.create(req.body).then((todo) => res.json(todo)).catch((err) => {
+  Todos.create(req.body.message, req.body.completion)
+  .then((todo) => {
+    res.format({
+      html: () => {
+        res.redirect(301, '/todos')
+      },
+      json: () => {
+        res.json(todo)
+      }
+    })
+  })
+  .catch((err) => {
     return res.status(404).send(err);
   });
 });
@@ -146,7 +145,5 @@ router.delete('/:id', (req, res) => { // need a VIEW
     return res.status(404).send(err);
   })
 });
-
-
 
 module.exports = router;
