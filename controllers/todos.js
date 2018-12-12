@@ -156,7 +156,7 @@ router.patch('/:id', (req, res) => { // need a VIEW
 
 
 //delete a todo
-//WIP
+//DONE
 router.delete('/:id', (req, res) => { // need a VIEW
   if (!req.params.id) {
     return res.status(404).send('NOT FOUND');
