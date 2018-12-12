@@ -22,10 +22,14 @@ api.use(bodyParser.urlencoded({ extended: false }))
 // api.use(methodOverride(‘_method’))
 
 // ROUTES
+api.use('/todos', require('./controllers/todos.js'))
+
 api.all('/', (req, res, next) => {
   res.redirect(301, '/todos');
 });
-api.use('/todos', require('./controllers/todos.js'))
+api.get('*', (req, res, next) => {
+  res.redirect(301, '/todos');
+});
 
 api.listen(3000);
 
