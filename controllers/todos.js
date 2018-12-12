@@ -168,7 +168,8 @@ router.delete('/:id', (req, res) => { // need a VIEW
         res.redirect(301, '/todos');
       },
       json: () => {
-        res.status(200).end();
+        const done = {message : 'sucess'};
+        res.json(done);
       }
     })
   })
