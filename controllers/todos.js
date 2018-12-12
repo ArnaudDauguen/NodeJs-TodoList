@@ -3,8 +3,6 @@ const router = require('express')();
 const Todos = require('./../models/todos');
 const _ = require('lodash');
 
-let name = 'Arnaud';
-
 
 
 // GET all TODOS
@@ -13,19 +11,26 @@ router.get('/', (req, res) => {
   Todos.getAll()
   .then((todos) =>
   {
-    //prepare content
-    let content = '';
-    todos.forEach(function(todo) {
-      content += '<div><h2>' + todo['name'] + '</h2>';
-      content += '<p>' + todo['completion'] + '</p>';
-      content += '<p> Created at ' + todo['created_at'] + '</p>';
-      content += '<p> Updated at ' + todo['updated_at'] + '</p></div>';
+    
+    res.format({
+      html: () => {//prepare content
+        let content = '';
+        todos.forEach(function(todo) {
+          content += '<div><h2>' + todo['name'] + '</h2>';
+          content += '<p>' + todo['completion'] + '</p>';
+          content += '<p> Created at ' + todo['created_at'] + '</p>';
+          content += '<p> Updated at ' + todo['updated_at'] + '</p></div>';
+        });
+          res.render("index", {  
+              title: 'Todo List',
+              name: 'Arnaud',
+              content: content
+          });
+      },
+      json: () => {
+          res.json(todos);
+      }
     });
-    res.render('index', {
-      title: 'Todo list',
-      name: name,
-      content: content
-    })
   })
   .catch((err) => {
     return res.status(404).send(err);
@@ -88,7 +93,7 @@ router.post('/', (req, res) => { // need a VIEW
   });
 });
 
-
+//CREATE USER
 
 router.put('/:id', (req, res) => { // need a VIEW
   if (!req.params.id) {

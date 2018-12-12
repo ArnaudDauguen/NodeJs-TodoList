@@ -7,7 +7,8 @@ const bodyParser = require('body-parser');
 
 db.open('api.db').then(() => {
   Promise.all([
-    db.run("CREATE TABLE IF NOT EXISTS todos (name, completion, created_at, updated_at)"),
+    db.run("CREATE TABLE IF NOT EXISTS todos (name, completion, updatedAt, createdAt, userId)"),
+    db.run("CREATE TABLE IF NOT EXISTS users (firstname, lastname, username, password, email, createdAt, updatedAt)"),
   ]).then(() => {
     console.log('Database is ready')
   }).catch((err) => {
@@ -21,7 +22,10 @@ api.use(bodyParser.urlencoded({ extended: false }))
 // api.use(methodOverride(‘_method’))
 
 // ROUTES
-api.use('/todos', require('./controllers/todos'))
+api.all('/', (req, res, next) => {
+  res.redirect(301, '/todos');
+});
+api.use('/todos', require('./controllers/todos.js'))
 
 api.listen(3000);
 
