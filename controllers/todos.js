@@ -4,6 +4,7 @@ const Todos = require('./../models/todos');
 const _ = require('lodash');
 
 let username = "Toi";
+let userId = 1;
 
 //GET adding TODO
 //TODO
@@ -101,7 +102,7 @@ router.get('/:id', (req, res) => { // need a VIEW
 // add a new todo
 //DONE
 router.post('/', (req, res) => { // need a VIEW
-  Todos.create(req.body.message, req.body.completion)
+  Todos.create([req.body.message, req.body.completion, userId])
   .then((todo) => {
     res.format({
       html: () => {
@@ -141,7 +142,18 @@ router.delete('/:id', (req, res) => { // need a VIEW
   if (!req.params.id) {
     return res.status(404).send('NOT FOUND');
   }
-  Todos.delete(req.params.id).then(() => res.json({ message: 'Todo supprimée avec succès' })).catch((err) => {
+  Todos.delete(req.params.id)
+  .then(() => {
+    res.format({
+      html: () => {
+        res.redirect(301, '/todos');
+      },
+      json: () => {
+        res.status(200).end();
+      }
+    })
+  })
+  .catch((err) => {
     return res.status(404).send(err);
   })
 });

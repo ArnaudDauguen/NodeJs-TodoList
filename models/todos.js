@@ -16,12 +16,10 @@ module.exports = {
   },
   async create(params) {
 
-    params.created_at = new Date()
-    params.updated_at = new Date()
-
     const data = _.values(params)
+    console.log(params);
 
-    const { lastID } = await db.run("INSERT INTO todos VALUES(?,?,?,?,?)", data)
+    const { lastID } = await db.run("INSERT INTO todos VALUES(?, ?, NOW(), NOW(), ?)", data)
 
     return this.findOne(lastID)
   },
@@ -32,7 +30,7 @@ module.exports = {
 
     const data = _.values(params)
 
-    const { lastID } = await db.run("INSERT INTO users VALUES(?,?,?,?,?,?,?)", data)
+    const { lastID } = await db.run("INSERT INTO users VALUES(?, ?, ?, ?, ?, NOW(), NOW())", data)
 
     return this.findOneUser(lastID)
   },

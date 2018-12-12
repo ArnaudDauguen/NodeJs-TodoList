@@ -10,7 +10,7 @@ db.open('api.db').then(() => {
     db.run("CREATE TABLE IF NOT EXISTS todos (name, completion, updatedAt, createdAt, userId)"),
     db.run("CREATE TABLE IF NOT EXISTS users (firstname, lastname, username, password, email, createdAt, updatedAt)"),
   ]).then(() => {
-    console.log('Database is ready')
+    console.log('Databases are ready')
   }).catch((err) => {
     console.log('Une erreur est survenue :', err)
   })
