@@ -7,6 +7,7 @@ let username = "Toi";
 
 
 // GET all TODOS
+//DONE
 router.get('/', (req, res) => {
 
   Todos.getAll()
@@ -41,8 +42,8 @@ router.get('/', (req, res) => {
 
 
 
-//get /todos/add WIP
 //GET adding TODO
+//TODO
 router.get('/add', (req, res) => { // need a VIEW
   console.log(req)
   if (!req.body || (req.body && (!req.body.name || !req.body.completion))){
@@ -56,8 +57,8 @@ router.get('/add', (req, res) => { // need a VIEW
 
 
 
-//get /todos/:todoId/edit WIP
 //GET editing TODO
+//TODO
 router.get('/:id/edit', (req, res) => { // need a VIEW
   if (!req.params.id) {
     return res.status(404).send('NOT FOUND');
@@ -72,6 +73,7 @@ router.get('/:id/edit', (req, res) => { // need a VIEW
 
 
 //get A todo
+//DONE
 router.get('/:id', (req, res) => { // need a VIEW
   if (!req.params.id) {
     return res.status(404).send('NOT FOUND');
@@ -103,7 +105,8 @@ router.get('/:id', (req, res) => { // need a VIEW
 });
 
 
-
+// add a new todo
+//TODO
 router.post('/', (req, res) => { // need a VIEW
   console.log(req)
   if (!req.body || (req.body && (!req.body.name || !req.body.completion))){
@@ -115,8 +118,12 @@ router.post('/', (req, res) => { // need a VIEW
   });
 });
 
-//CREATE USER
 
+//CREATE USER
+//TODO
+
+//edit a todo
+//TODO
 router.put('/:id', (req, res) => { // need a VIEW
   if (!req.params.id) {
     return res.status(404).send('NOT FOUND');
@@ -129,7 +136,8 @@ router.put('/:id', (req, res) => { // need a VIEW
 });
 
 
-
+//delete a todo
+//WIP
 router.delete('/:id', (req, res) => { // need a VIEW
   if (!req.params.id) {
     return res.status(404).send('NOT FOUND');
