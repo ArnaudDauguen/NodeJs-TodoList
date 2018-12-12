@@ -54,8 +54,10 @@ router.get('/', (req, res) => {
 //GET editing TODO
 //TODO
 router.get('/:id/edit', (req, res) => { // need a VIEW
-  res.render({
+  const todo = Todos.findOne(req.params.id)
+  res.render("form_todo", {
     title: "Patch a todo",
+    todo: todo,
     method: "PATCH"
   })
 });
@@ -120,16 +122,31 @@ router.post('/', (req, res) => { // need a VIEW
 
 //edit a todo
 //TODO
-router.put('/:id', (req, res) => { // need a VIEW
+router.patch('/:id', (req, res) => { // need a VIEW
   if (!req.params.id) {
     return res.status(404).send('NOT FOUND');
   }
-  req.body.updated_at = new Date(); // Update time
-  req.body.id = req.params.id; // Add id to body
-  Todos.update(req.body)
+
+  let changes = {}
+
+  if (req.body.message) {
+    changes.message = req.body.message
+  }
+  if (req.body.completion) {
+    changes.completion = req.body.completion
+  }
+  // req.body.updated_at = new Date(); // Update time
+  let paramId = req.params.id; // Add id to body
+
+  Todos.update(changes, paramId)
   .then((todo) => {
     res.format({
-      
+      html: () => {
+        res.redirect(301, '/todos')
+      },
+      json: () => {
+        res.json(todo)
+      }
     })
   })
   .catch((err) => {

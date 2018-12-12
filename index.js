@@ -4,6 +4,7 @@ const api = express();
 api.set('view engine', 'hbs');
 api.set('views', __dirname + '/views');
 const bodyParser = require('body-parser');
+const methodOverride = require('method-override')
 
 db.open('api.db').then(() => {
   Promise.all([
@@ -19,7 +20,7 @@ db.open('api.db').then(() => {
 // MIDDLEWARE POUR PARSER LE BODY
 api.use(bodyParser.json())
 api.use(bodyParser.urlencoded({ extended: false }))
-// api.use(methodOverride(‘_method’))
+api.use(methodOverride('_method'))
 
 // ROUTES
 api.use('/todos', require('./controllers/todos.js'))
