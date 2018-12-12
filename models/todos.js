@@ -17,20 +17,16 @@ module.exports = {
   async create(params) {
 
     const data = _.values(params)
-    console.log(params);
 
-    const { lastID } = await db.run("INSERT INTO todos VALUES(?, ?, NOW(), NOW(), ?)", data)
+    const { lastID } = await db.run("INSERT INTO todos VALUES(?, ?, date('now'), date('now'), ?)", data)
 
     return this.findOne(lastID)
   },
   async createUser(params) {
 
-    params.created_at = new Date()
-    params.updated_at = new Date()
-
     const data = _.values(params)
 
-    const { lastID } = await db.run("INSERT INTO users VALUES(?, ?, ?, ?, ?, NOW(), NOW())", data)
+    const { lastID } = await db.run("INSERT INTO users VALUES(?, ?, ?, ?, ?, date('now'), date('now'))", data)
 
     return this.findOneUser(lastID)
   },

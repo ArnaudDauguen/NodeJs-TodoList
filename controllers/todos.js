@@ -30,8 +30,8 @@ router.get('/', (req, res) => {
         todos.forEach(function(todo) {
           content += '<div><h2>' + todo['name'] + '</h2>';
           content += '<p>' + todo['completion'] + '</p>';
-          content += '<p> Created at ' + todo['created_at'] + '</p>';
-          content += '<p> Updated at ' + todo['updated_at'] + '</p></div>';
+          content += '<p> Created at ' + todo['createdAt'] + '</p>';
+          content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>';
         });
           res.render("index", {  
               title: 'Todo List',
