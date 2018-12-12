@@ -27,8 +27,9 @@ router.get('/', (req, res) => {
     res.format({
       html: () => {//prepare content
         let content = '';
-        todos.forEach((todo) => {
-          content += '<div><h2>' + todo['id'] + todo['name'] + '</h2>';
+
+        todos.forEach(function(todo) {
+          content += '<div><h2>' + todo['id'] + '. ' + todo['name'] + '</h2>';
           content += '<p>' + todo['completion'] + '</p>';
           content += '<p> Created at ' + todo['createdAt'] + '</p>';
           content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>';
