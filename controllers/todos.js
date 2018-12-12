@@ -27,8 +27,8 @@ router.get('/', (req, res) => {
     res.format({
       html: () => {//prepare content
         let content = '';
-        todos.forEach(function(todo) {
-          content += '<div><h2>' + todo['name'] + '</h2>';
+        todos.forEach((todo) => {
+          content += '<div><h2>' + todo['id'] + todo['name'] + '</h2>';
           content += '<p>' + todo['completion'] + '</p>';
           content += '<p> Created at ' + todo['createdAt'] + '</p>';
           content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>';
@@ -168,7 +168,8 @@ router.delete('/:id', (req, res) => { // need a VIEW
         res.redirect(301, '/todos');
       },
       json: () => {
-        res.status(200).end();
+        const done = {message : 'sucess'};
+        res.json(done);
       }
     })
   })
