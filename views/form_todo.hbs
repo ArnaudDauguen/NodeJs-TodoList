@@ -4,12 +4,30 @@
     <title>{{title}}</title>
 </head>
 <body>
+    {{if method === 'POST'}}
     <h1>Create a todo</h1>
     <form action="/todos", method="POST">
-        <label for="email">Message :</label>
+        <label for="message">Message :</label>
         <input class="input" id="message" name="message" type="message" value=""/>
         <br/>
-        <label for="email">Completion :</label>
+        <label for="completion">Completion :</label>
+        <select name="completion" id="completion">
+            <option value="todo">Todo</option>
+            <option value="inprogress">In Progress</option>
+            <option value="done">Done</option>
+        </select>
+        <p>
+            <input type="submit" value="Submit">
+        </p>
+    </form>
+
+    {{else if method === 'PATCH'}}
+    <h1>Modif a todo</h1>
+    <form action="/todos", method="POST">
+        <label for="message">Message :</label>
+        <input class="input" id="message" name="message" type="message" value=""/>
+        <br/>
+        <label for="completion">Completion :</label>
         <select name="completion" id="completion">
             <option value="todo">Todo</option>
             <option value="inprogress">In Progress</option>

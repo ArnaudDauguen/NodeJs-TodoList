@@ -54,19 +54,15 @@ router.get('/', (req, res) => {
 //GET editing TODO
 //TODO
 router.get('/:id/edit', (req, res) => { // need a VIEW
-  if (!req.params.id) {
-    return res.status(404).send('NOT FOUND');
-  }
-  req.body.updated_at = new Date(); // Update time
-  req.body.id = req.params.id; // Add id to body
-  Todos.update(req.body).then((todo) => res.json(todo)).catch((err) => {
-    return res.status(404).send(err);
-  });
+  res.render({
+    title: "Patch a todo",
+    method: "PATCH"
+  })
 });
 
 
 
-//get A todo
+//get a todo
 //DONE
 router.get('/:id', (req, res) => { // need a VIEW
   if (!req.params.id) {
@@ -130,7 +126,13 @@ router.put('/:id', (req, res) => { // need a VIEW
   }
   req.body.updated_at = new Date(); // Update time
   req.body.id = req.params.id; // Add id to body
-  Todos.update(req.body).then((todo) => res.json(todo)).catch((err) => {
+  Todos.update(req.body)
+  .then((todo) => {
+    res.format({
+      
+    })
+  })
+  .catch((err) => {
     return res.status(404).send(err);
   });
 });
