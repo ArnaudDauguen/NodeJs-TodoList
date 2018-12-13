@@ -6,51 +6,6 @@ const _ = require('lodash');
 let username = "Toi"
 let userId = 1
 
-//GET adding TODO
-//TODO
-router.get('/add', (req, res) => { // need a VIEW
-    res.render("form_todo", {
-    title: "Add a todo",
-    method: "POST"
-  })
-})
-
-
-// GET all TODOS
-//DONE
-router.get('/', (req, res) => {
-
-  Todos.getAll()
-  .then((todos) =>
-  {
-
-    res.format({
-      html: () => {//prepare content
-        let content = ''
-        
-        todos.forEach((todo) => {
-          content += '<div><h2>' + todo['id'] + '. ' + todo['name'] + '</h2>';
-          content += '<p>' + 'Status : ' + todo['completion'] + '</p>';
-          content += '<p> Created at ' + todo['createdAt'] + '</p>';
-          content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>';
-        });
-          res.render("index", {  
-              title: 'Todo List',
-              name: username,
-              content: content
-          })
-      },
-      json: () => {
-          res.json(todos)
-      }
-    })
-  })
-  .catch((err) => {
-    return res.status(404).send(err)
-  })
-  
-})
-
 
 //GET editing TODO
 //TODO
@@ -63,6 +18,15 @@ router.get('/:id/edit', (req, res) => { // need a VIEW
   })
 })
 
+
+//GET adding TODO
+//TODO
+router.get('/add', (req, res) => { // need a VIEW
+  res.render("form_todo", {
+    title: "Add a todo",
+    method: "POST"
+  })
+})
 
 
 //get a todo
@@ -97,29 +61,6 @@ router.get('/:id', (req, res) => { // need a VIEW
   })
 })
 
-
-
-
-// Add a new todo
-//DONE
-router.post('/', (req, res) => { // need a VIEW
-  Todos.create([req.body.message, req.body.completion, userId])
-  .then((todo) => {
-    res.format({
-      html: () => {
-        res.redirect(301, '/todos')
-      },
-      json: () => {
-        const done = {message : 'sucess'};
-        res.json(done);
-
-      }
-    })
-  })
-  .catch((err) => {
-    return res.status(404).send(err)
-  })
-})
 
 //edit a todo
 //TODO
@@ -179,5 +120,63 @@ router.delete('/:id', (req, res) => { // need a VIEW
     return res.status(404).send(err)
   })
 })
+
+
+// Add a new todo
+//DONE
+router.post('/', (req, res) => { // need a VIEW
+  Todos.create([req.body.message, req.body.completion, userId])
+  .then((todo) => {
+    res.format({
+      html: () => {
+        res.redirect(301, '/todos')
+      },
+      json: () => {
+        const done = {message : 'sucess'};
+        res.json(done);
+
+      }
+    })
+  })
+  .catch((err) => {
+    return res.status(404).send(err)
+  })
+})
+
+// GET all TODOS
+//DONE
+router.get('/', (req, res) => {
+
+  Todos.getAll()
+  .then((todos) =>
+  {
+
+    res.format({
+      html: () => {//prepare content
+        let content = ''
+        
+        todos.forEach((todo) => {
+          content += '<div><h2>' + todo['id'] + '. ' + todo['name'] + '</h2>';
+          content += '<p>' + 'Status : ' + todo['completion'] + '</p>';
+          content += '<p> Created at ' + todo['createdAt'] + '</p>';
+          content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>';
+        });
+          res.render("index", {  
+              title: 'Todo List',
+              name: username,
+              content: content
+          })
+      },
+      json: () => {
+          res.json(todos)
+      }
+    })
+  })
+  .catch((err) => {
+    return res.status(404).send(err)
+  })
+  
+})
+
 
 module.exports = router

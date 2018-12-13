@@ -14,9 +14,33 @@ router.get('/adduser', (req, res) => { // need a VIEW
     })
 })
 
+  
+//delete a user
+//DONE
+router.delete('/:id', (req, res) => { // find a route
+  if (!req.params.id) {
+    return res.status(404).send('NOT FOUND');
+  }
+  Todos.deleteUser(req.params.id)
+  .then(() => {
+    res.format({
+      html: () => {
+        res.redirect(301, '/todos');
+      },
+      json: () => {
+        res.json({message : 'sucess'});
+      }
+    })
+  })
+  .catch((err) => {
+    return res.status(404).send(err);
+  })
+});
+
+
 //CREATE USER
 //WIP
-router.post('/', (res, req) => { // find a route
+router.post('/', (res, req) => {
     Todos.createUser([req.body.firstname, req.body.lastname, req.body.username, req.body.passsword, req.body.email])
     .then(async () => {
       await new Promise((resolve, reject) => {
@@ -40,26 +64,5 @@ router.post('/', (res, req) => { // find a route
     })
   })
 
-  //delete a user
-//DONE
-router.delete('/:id', (req, res) => { // find a route
-    if (!req.params.id) {
-      return res.status(404).send('NOT FOUND');
-    }
-    Todos.deleteUser(req.params.id)
-    .then(() => {
-      res.format({
-        html: () => {
-          res.redirect(301, '/todos');
-        },
-        json: () => {
-          res.json({message : 'sucess'});
-        }
-      })
-    })
-    .catch((err) => {
-      return res.status(404).send(err);
-    })
-  });
 
 module.exports = router
