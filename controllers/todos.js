@@ -2,8 +2,6 @@ const router = require('express')();
 //const router = require('express').Router();
 const Todos = require('./../models/todos');
 const _ = require('lodash');
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
 
 let username = "Toi";
 let userId = 1;
@@ -25,12 +23,12 @@ router.get('/', (req, res) => {
   Todos.getAll()
   .then((todos) =>
   {
-    
+
     res.format({
       html: () => {//prepare content
         let content = '';
 
-        todos.forEach(function(todo) {
+        todos.forEach((todo) => {
           content += '<div><h2>' + todo['id'] + '. ' + todo['name'] + '</h2>';
           content += '<p>' + 'Status : ' + todo['completion'] + '</p>';
           content += '<p> Created at ' + todo['createdAt'] + '</p>';
@@ -100,16 +98,9 @@ router.get('/:id', (req, res) => { // need a VIEW
 });
 
 
-//GET adding User
-//WIP
-router.get('/adduser', (req, res) => { // need a VIEW
-  res.render("form_user", {
-  title: "Create a user",
-  method: "POST"
-  })
-})
 
-// add a new todo
+
+// Add a new todo
 //DONE
 router.post('/', (req, res) => { // need a VIEW
   Todos.create([req.body.message, req.body.completion, userId])
@@ -121,7 +112,6 @@ router.post('/', (req, res) => { // need a VIEW
       json: () => {
         const done = {message : 'sucess'};
         res.json(done);
-        res.json({message : 'sucess'});
       }
     })
   })
@@ -130,34 +120,7 @@ router.post('/', (req, res) => { // need a VIEW
   });
 });
 
-
-//CREATE USER
-//WIP
-router.post('/', (res, req) => {
-  Todos.createUser([req.body.firstname, req.body.lastname, req.body.username, req.body.passsword, req.body.email])
-  .then(async () => {
-    await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const crypt = bcrypt.hash(req.body.passsword, saltRounds)
-        resolve(crypt)
-      }, 1);
-    });
-    res.format({
-      html: () => {
-        res.redirect(301, '/todos');
-      },
-      json: () => {
-        const done = { message: 'sucess' };
-        res.json(done);
-      }
-    });
-  })
-  .catch((err) => {
-    return res.status(404).send(err)
-  })
-})
-
-//edit a todo
+// Edit a todo
 //TODO
 router.patch('/:id', (req, res) => { // need a VIEW
   if (!req.params.id) {
@@ -182,7 +145,6 @@ router.patch('/:id', (req, res) => { // need a VIEW
         res.redirect(301, '/todos')
       },
       json: () => {
-
         const done = {message : 'sucess'};
         res.json(done);
         res.json({message : 'sucess'});
@@ -192,29 +154,6 @@ router.patch('/:id', (req, res) => { // need a VIEW
   .catch((err) => {
     return res.status(404).send(err);
   });
-});
-
-
-//delete a todo
-//DONE
-router.delete('/:id', (req, res) => { // need a VIEW
-  if (!req.params.id) {
-    return res.status(404).send('NOT FOUND');
-  }
-  Todos.delete(req.params.id)
-  .then(() => {
-    res.format({
-      html: () => {
-        res.redirect(301, '/todos');
-      },
-      json: () => {
-        res.json({message : 'sucess'});
-      }
-    })
-  })
-  .catch((err) => {
-    return res.status(404).send(err);
-  })
 });
 
 module.exports = router;

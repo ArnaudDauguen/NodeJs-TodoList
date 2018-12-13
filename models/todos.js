@@ -63,8 +63,6 @@ module.exports = {
       }
     }
 
-    string = string.substring(0, string.length - 1); // Remove last comma
-
     const data = _.values(params)
     const { changes } = await db.run("UPDATE users SET " + string + " WHERE rowid = ?", data)
     
