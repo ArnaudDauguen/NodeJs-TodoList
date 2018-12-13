@@ -6,9 +6,9 @@ const _ = require('lodash');
 let userId = 1
 
 
-//GET editing TODO
-//DONE
-router.get('/:id/edit', (req, res) => { // need a VIEW
+// GET editing todo
+// DONE
+router.get('/:id/edit', (req, res) => {
   const todo = Todos.findOne(req.params.id)
   res.render("form_todo", {
     title: "Patch a todo",
@@ -18,9 +18,9 @@ router.get('/:id/edit', (req, res) => { // need a VIEW
 })
 
 
-//GET adding TODO
-//DONE
-router.get('/add', (req, res) => { // need a VIEW
+// GET adding todo
+// DONE
+router.get('/add', (req, res) => {
   res.render("form_todo", {
     title: "Add a todo",
     idAndMethod: "/?_method=POST"
@@ -28,16 +28,16 @@ router.get('/add', (req, res) => { // need a VIEW
 })
 
 
-//get a todo
-//DONE
-router.get('/:id', (req, res) => { // need a VIEW
+// GET a todo
+// DONE
+router.get('/:id', (req, res) => {
   if (!req.params.id) {
     return res.status(404).send('NOT FOUND')
   }
   Todos.findOne(req.params.id)
   .then((todo) => {
     res.format({
-      html: () => {//prepare content
+      html: () => { // Prepare content
         let content = ''
         content += '<div><h2>' + todo['id'] + '. ' + todo['name'] + '</h2>'
         content += '<p>' + 'Status : ' + todo['completion'] + '</p>'
@@ -60,9 +60,9 @@ router.get('/:id', (req, res) => { // need a VIEW
 })
 
 
-//edit a todo
-//DONE
-router.patch('/:id', (req, res) => { // need a VIEW
+// EDIT a todo
+// DONE
+router.patch('/:id', (req, res) => {
   if (!req.params.id) {
     return res.status(404).send('NOT FOUND')
   }
@@ -76,7 +76,7 @@ router.patch('/:id', (req, res) => { // need a VIEW
     changes.completion = req.body.completion
   }
 
-  changes.id = req.params.id //add id
+  changes.id = req.params.id // add id
 
   Todos.update(changes)
   .then((todo) => {
@@ -95,9 +95,9 @@ router.patch('/:id', (req, res) => { // need a VIEW
 })
 
 
-//delete a todo
+// DELETE a todo
 //DONE
-router.delete('/:id', (req, res) => { // need a VIEW
+router.delete('/:id', (req, res) => {
   if (!req.params.id) {
     return res.status(404).send('NOT FOUND')
   }
@@ -117,19 +117,16 @@ router.delete('/:id', (req, res) => { // need a VIEW
         }
       })
     })
-
   })
   .catch((err) => {
     return res.status(404).send(err)
   })
-
-  
 })
 
 
-// Add a new todo
-//DONE
-router.post('/', (req, res) => { // need a VIEW
+// ADD a new todo
+// DONE
+router.post('/', (req, res) => {
   Todos.create([req.body.message, req.body.completion, userId])
   .then((todo) => {
     res.format({
@@ -147,8 +144,8 @@ router.post('/', (req, res) => { // need a VIEW
   })
 })
 
-// GET all TODOS
-//DONE
+// GET all todos
+// DONE
 router.get('/', (req, res) => {
 
   Todos.getAll()
@@ -156,7 +153,7 @@ router.get('/', (req, res) => {
   {
 
     res.format({
-      html: () => {//prepare content
+      html: () => { // Prepare content
         let content = ''
         
         todos.forEach((todo) => {
