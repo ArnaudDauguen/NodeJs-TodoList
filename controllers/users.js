@@ -5,18 +5,9 @@ const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-//GET adding User
-//DONE
-router.get('/adduser', (req, res) => { // need a VIEW
-    res.render("form_user", {
-    title: "Create a user",
-    idAndMethod: "/?_method=POST"
-    })
-})
-
-//GET editing User
-//TODO
-router.get('/:id/edit', (req, res) => { // need a VIEW
+// GET editing User
+// WIP
+router.get('/:id/edit', (req, res) => { 
   const user = Users.findOneUser(req.params.id)
   res.render("form_user", {
     title: "Patch a user",
@@ -25,17 +16,81 @@ router.get('/:id/edit', (req, res) => { // need a VIEW
   })
 })
 
-//delete a user
-//DONE
-router.delete('/:id', (req, res) => { // find a route
+// GET adding User
+// DONE
+router.get('/add', (req, res) => {
+    res.render("form_user", {
+    title: "Create a user",
+    idAndMethod: "/?_method=POST"
+    })
+})
+
+
+// GET a user
+// DONE
+router.get('/:id', (req, res) => {
   if (!req.params.id) {
-    return res.status(404).send('NOT FOUND');
+    return res.status(404).send('NOT FOUND')
   }
-  Users.deleteUser(req.params.id)
-  .then(() => {
+  Users.findOneUser(req.params.id)
+  .then((user) => {
+    res.format({
+      html: () => { // Prepare content
+        let content = ''
+        content += '<table><tr><th><td> User n\': ' + user['id'] + ' Username : ' + user['username'] + '</th></td>';
+        content += '<th><td> ' + 'Firstname : ' + user['firstname'] + 'Lastname : ' + user['lastname'] + '</th></td>';
+        content += '<th><td> ' + 'Email : ' + user['email'] + '</th></td>';
+        content += '<th><td> ' + 'User created at : ' + user['createdAt'] + '</th></td>';
+        content += '<th><td> ' + 'User updated at : ' + user['updatedAt'] + '</th></td></tr></table>';
+       
+        res.render("show", {  
+            title: 'Todo List',
+            content: content
+        })
+      },
+      json: () => {
+          res.json(todo)
+      }
+    })
+  })
+  .catch((err) => {
+    return res.status(404).send(err)
+  })
+})
+
+
+// EDIT a user
+// DONE
+router.patch('/:id', (req, res) => {
+  if (!req.params.id) {
+    return res.status(404).send('NOT FOUND')
+  }
+
+  let changes = {}
+
+  if (req.body.firstname) {
+    changes.firstname = req.body.firstname
+  }
+  if (req.body.lastname) {
+    changes.lastname = req.body.lastname
+  }
+  if (req.body.email) {
+    changes.email = req.body.email
+  }
+  if (req.body.username) {
+    changes.username = req.body.username
+  }
+  if (req.body.passsword) {
+    changes.passsword = req.body.passsword
+  }
+
+  changes.id = req.params.id // add id
+
+  Users.updateUser(changes)
+  .then((user) => {
     res.format({
       html: () => {
-        res.redirect(301, '/users');
+        res.redirect(301, '/todos')
       },
       json: () => {
         res.json({message : 'sucess'});
@@ -43,13 +98,43 @@ router.delete('/:id', (req, res) => { // find a route
     })
   })
   .catch((err) => {
-    return res.status(404).send(err);
+    return res.status(404).send(err)
   })
-});
+})
 
 
-//CREATE USER
-//WIP
+// DELETE a user
+// DONE
+router.delete('/:id', (req, res) => {
+  if (!req.params.id) {
+    return res.status(404).send('NOT FOUND');
+  }
+  Users.findOneUser(req.params.id)
+  .then((user) => {
+    if(!user){
+      return res.status(404).send('NOT FOUND')
+    }
+    Users.deleteUser(req.params.id)
+    .then(() => {
+      res.format({
+        html: () => {
+          res.redirect(301, '/users')
+        },
+        json: () => {
+          res.json({message : 'sucess'})
+        }
+      })
+    })
+  })
+  .catch((err) => {
+    return res.status(404).send(err)
+  })
+})
+
+
+
+// CREATE users
+// WIP
 router.post('/', (res, req) => {
     Users.createUser([req.body.firstname, req.body.lastname, req.body.username, req.body.passsword, req.body.email])
     .then(async () => {
@@ -75,8 +160,8 @@ router.post('/', (res, req) => {
   })
 
 
-// GET all USERS
-//TODO
+// GET all users
+// DONE
 router.get('/', (req, res) => {
 
   Users.getAllUsers()
@@ -84,7 +169,7 @@ router.get('/', (req, res) => {
   {
 
     res.format({
-      html: () => {//prepare content
+      html: () => { // Prepare content
         let content = ''
         
         users.forEach((user) => {
@@ -109,6 +194,5 @@ router.get('/', (req, res) => {
     return res.status(404).send(err)
   })
 })
-
 
 module.exports = router
