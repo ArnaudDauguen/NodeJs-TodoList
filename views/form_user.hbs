@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>{{title}}</title>
+</head>
+<body>
+    <h1>Create a User</h1>
+    <form action="/users", method="POST">
+        <label for="message">Username :</label>
+        <input class="input" id="message" name="message" type="message" value=""/>
+        <br/>
+        <label for="completion">Completion :</label>
+        <select name="completion" id="completion">
+            <option value="Todo">Todo</option>
+            <option value="InProgress">In Progress</option>
+            <option value="Done">Done</option>
+        </select>
+        <p>
+            <input type="submit" value="Create">
+        </p>
+    </form>
+</body>
+</html>

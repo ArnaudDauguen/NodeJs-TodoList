@@ -5,9 +5,9 @@
 </head>
 <body>
     <h1>Create a todo</h1>
-    <form action="/todos", method="POST">
+    <form action="/todos{{idAndMethod}}", method="POST">
         <label for="message">Message :</label>
-        <input class="input" id="message" name="message" type="message" value=""/>
+        <input class="input" id="message" name="name" type="message" value=""/>
         <br/>
         <label for="completion">Completion :</label>
         <select name="completion" id="completion">

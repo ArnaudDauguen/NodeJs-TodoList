@@ -14,7 +14,7 @@ router.get('/:id/edit', (req, res) => { // need a VIEW
   res.render("form_todo", {
     title: "Patch a todo",
     todo: todo,
-    method: "PATCH"
+    idAndMethod: "/" + req.params.id + "?_method=PATCH"
   })
 })
 
@@ -24,7 +24,7 @@ router.get('/:id/edit', (req, res) => { // need a VIEW
 router.get('/add', (req, res) => { // need a VIEW
   res.render("form_todo", {
     title: "Add a todo",
-    method: "POST"
+    idAndMethod: "/?_method=POST"
   })
 })
 
