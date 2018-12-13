@@ -3,8 +3,8 @@ const router = require('express')();
 const Todos = require('./../models/todos');
 const _ = require('lodash');
 
-let username = "Toi";
-let userId = 1;
+let username = "Toi"
+let userId = 1
 
 //GET adding TODO
 //TODO
@@ -26,8 +26,8 @@ router.get('/', (req, res) => {
 
     res.format({
       html: () => {//prepare content
-        let content = '';
-
+        let content = ''
+        
         todos.forEach((todo) => {
           content += '<div><h2>' + todo['id'] + '. ' + todo['name'] + '</h2>';
           content += '<p>' + 'Status : ' + todo['completion'] + '</p>';
@@ -38,18 +38,18 @@ router.get('/', (req, res) => {
               title: 'Todo List',
               name: username,
               content: content
-          });
+          })
       },
       json: () => {
-          res.json(todos);
+          res.json(todos)
       }
-    });
+    })
   })
   .catch((err) => {
-    return res.status(404).send(err);
-  });
+    return res.status(404).send(err)
+  })
   
-});
+})
 
 
 //GET editing TODO
@@ -61,7 +61,7 @@ router.get('/:id/edit', (req, res) => { // need a VIEW
     todo: todo,
     method: "PATCH"
   })
-});
+})
 
 
 
@@ -69,33 +69,33 @@ router.get('/:id/edit', (req, res) => { // need a VIEW
 //DONE
 router.get('/:id', (req, res) => { // need a VIEW
   if (!req.params.id) {
-    return res.status(404).send('NOT FOUND');
+    return res.status(404).send('NOT FOUND')
   }
   Todos.findOne(req.params.id)
   .then((todo) => {
     res.format({
       html: () => {//prepare content
-        let content = '';
-        content += '<div><h2>' + todo['id'] + '. ' + todo['name'] + '</h2>';
-        content += '<p>' + 'Status : ' + todo['completion'] + '</p>';
-        content += '<p> Created at ' + todo['createdAt'] + '</p>';
-        content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>';
+        let content = ''
+        content += '<div><h2>' + todo['id'] + '. ' + todo['name'] + '</h2>'
+        content += '<p>' + 'Status : ' + todo['completion'] + '</p>'
+        content += '<p> Created at ' + todo['createdAt'] + '</p>'
+        content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>'
           
         res.render("show", {  
             title: 'Todo List',
             name: username,
             content: content
-        });
+        })
       },
       json: () => {
-          res.json(todo);
+          res.json(todo)
       }
-    });
+    })
   })
   .catch((err) => {
-    return res.status(404).send(err);
-  });
-});
+    return res.status(404).send(err)
+  })
+})
 
 
 
@@ -112,31 +112,58 @@ router.post('/', (req, res) => { // need a VIEW
       json: () => {
         const done = {message : 'sucess'};
         res.json(done);
+
       }
     })
   })
   .catch((err) => {
-    return res.status(404).send(err);
-  });
-});
+    return res.status(404).send(err)
+  })
+})
 
-// Edit a todo
+//CREATE USER
+//WIP
+router.post('/', (res, req) => {
+  Todos.createUser([req.body.firstname, req.body.lastname, req.body.username, req.body.passsword, req.body.email])
+  .then(async () => {
+    await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const crypt = bcrypt.hash(req.body.passsword, saltRounds)
+        resolve(crypt)
+      }, 1)
+    })
+    res.format({
+      html: () => {
+        res.redirect(301, '/todos')
+      },
+      json: () => {
+        const done = { message: 'sucess' }
+        res.json(done)
+      }
+    })
+  })
+  .catch((err) => {
+    return res.status(404).send(err)
+  })
+})
+
+//edit a todo
 //TODO
 router.patch('/:id', (req, res) => { // need a VIEW
   if (!req.params.id) {
-    return res.status(404).send('NOT FOUND');
+    return res.status(404).send('NOT FOUND')
   }
 
-  let changes = {};
+  let changes = {}
 
   if (req.body.name) {
-    changes.name = req.body.name;
+    changes.name = req.body.name
   }
   if (req.body.completion) {
-    changes.completion = req.body.completion;
+    changes.completion = req.body.completion
   }
 
-  changes.id = req.params.id; //add id
+  changes.id = req.params.id //add id
 
   Todos.update(changes)
   .then((todo) => {
@@ -152,8 +179,31 @@ router.patch('/:id', (req, res) => { // need a VIEW
     })
   })
   .catch((err) => {
-    return res.status(404).send(err);
-  });
-});
+    return res.status(404).send(err)
+  })
+})
 
-module.exports = router;
+
+//delete a todo
+//DONE
+router.delete('/:id', (req, res) => { // need a VIEW
+  if (!req.params.id) {
+    return res.status(404).send('NOT FOUND')
+  }
+  Todos.delete(req.params.id)
+  .then(() => {
+    res.format({
+      html: () => {
+        res.redirect(301, '/todos')
+      },
+      json: () => {
+        res.json({message : 'sucess'})
+      }
+    })
+  })
+  .catch((err) => {
+    return res.status(404).send(err)
+  })
+})
+
+module.exports = router

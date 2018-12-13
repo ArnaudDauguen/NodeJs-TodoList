@@ -1,9 +1,9 @@
-const db = require('sqlite');
-const express = require('express');
-const api = express();
-api.set('view engine', 'hbs');
-api.set('views', __dirname + '/views');
-const bodyParser = require('body-parser');
+const db = require('sqlite')
+const express = require('express')
+const api = express()
+api.set('view engine', 'hbs')
+api.set('views', __dirname + '/views')
+const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 
 
@@ -27,12 +27,12 @@ api.use(methodOverride('_method'))
 api.use('/todos', require('./controllers/todos.js'))
 
 api.all('/', (req, res, next) => {
-  res.redirect(301, '/todos');
-});
+  res.redirect(301, '/todos')
+})
 api.get('*', (req, res, next) => {
-  res.redirect(301, '/todos');
-});
+  res.redirect(301, '/todos')
+})
 
-api.listen(3000);
+api.listen(3000)
 
-console.log("http://localhost:3000/");
+console.log("http://localhost:3000/")
