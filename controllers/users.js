@@ -54,7 +54,7 @@ router.post('/', (res, req) => {
           res.redirect(301, '/users');
         },
         json: () => {
-          const done = { message: 'sucess' };
+          const done = { message: 'sucess'};
           res.json(done);
         }
       });
@@ -69,7 +69,7 @@ router.post('/', (res, req) => {
 //TODO
 router.get('/', (req, res) => {
 
-  users.getAll()
+  users.getAllUsers()
   .then((users) =>
   {
 

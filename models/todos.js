@@ -70,7 +70,7 @@ module.exports = {
     }
     
     const data = _.values(params)
-    const { changes } = await db.run("UPDATE users SET " + string + " WHERE rowid = ?", data)
+    const { changes } = await db.run("UPDATE users SET " + string + " updatedAt = data('now') WHERE rowid = ?", data)
     
     if (changes !== 0) {
       return this.findOneUser(params.id)
