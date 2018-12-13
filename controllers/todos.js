@@ -121,32 +121,6 @@ router.post('/', (req, res) => { // need a VIEW
   })
 })
 
-//CREATE USER
-//WIP
-router.post('/', (res, req) => {
-  Todos.createUser([req.body.firstname, req.body.lastname, req.body.username, req.body.passsword, req.body.email])
-  .then(async () => {
-    await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const crypt = bcrypt.hash(req.body.passsword, saltRounds)
-        resolve(crypt)
-      }, 1)
-    })
-    res.format({
-      html: () => {
-        res.redirect(301, '/todos')
-      },
-      json: () => {
-        const done = { message: 'sucess' }
-        res.json(done)
-      }
-    })
-  })
-  .catch((err) => {
-    return res.status(404).send(err)
-  })
-})
-
 //edit a todo
 //TODO
 router.patch('/:id', (req, res) => { // need a VIEW
