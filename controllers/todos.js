@@ -3,7 +3,6 @@ const router = require('express')();
 const Todos = require('./../models/todos');
 const _ = require('lodash');
 
-let username = "Toi"
 let userId = 1
 
 
@@ -47,7 +46,7 @@ router.get('/:id', (req, res) => { // need a VIEW
           
         res.render("show", {  
             title: 'Todo List',
-            name: username,
+            name: req.body.userId,
             content: content
         })
       },

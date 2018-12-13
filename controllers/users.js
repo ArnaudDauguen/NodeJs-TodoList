@@ -1,27 +1,37 @@
 const router = require('express')();
 //const router = require('express').Router();
-const users = require('./../models/todos');
+const Users = require('./../models/todos');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 //GET adding User
-//WIP
+//DONE
 router.get('/adduser', (req, res) => { // need a VIEW
     res.render("form_user", {
     title: "Create a user",
-    method: "POST"
+    idAndMethod: "/?_method=POST"
     })
 })
 
-  
+//GET editing User
+//TODO
+router.get('/:id/edit', (req, res) => { // need a VIEW
+  const user = Users.findOneUser(req.params.id)
+  res.render("form_user", {
+    title: "Patch a user",
+    todo: user,
+    idAndMethod: "/" + req.params.id + "?_method=PATCH"
+  })
+})
+
 //delete a user
 //DONE
 router.delete('/:id', (req, res) => { // find a route
   if (!req.params.id) {
     return res.status(404).send('NOT FOUND');
   }
-  users.deleteUser(req.params.id)
+  Users.deleteUser(req.params.id)
   .then(() => {
     res.format({
       html: () => {
@@ -41,7 +51,7 @@ router.delete('/:id', (req, res) => { // find a route
 //CREATE USER
 //WIP
 router.post('/', (res, req) => {
-    users.createUser([req.body.firstname, req.body.lastname, req.body.username, req.body.passsword, req.body.email])
+    Users.createUser([req.body.firstname, req.body.lastname, req.body.username, req.body.passsword, req.body.email])
     .then(async () => {
       await new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -69,7 +79,7 @@ router.post('/', (res, req) => {
 //TODO
 router.get('/', (req, res) => {
 
-  users.getAllUsers()
+  Users.getAllUsers()
   .then((users) =>
   {
 
@@ -78,11 +88,11 @@ router.get('/', (req, res) => {
         let content = ''
         
         users.forEach((user) => {
-          content += '<div><h2> User n\': ' + user['id'] + ' Username : ' + user['username'] + '</h2>';
-          content += '<p>' + 'Firstname : ' + user['firstname'] + 'Lastname : ' + user['lastname'] + '</p>';
-          content += '<p> Email : ' + user['email'] + '</p>';
-          content += '<p> User created at : ' + user['createdAt'] + '</p>';
-          content += '<p> User updated at : ' + user['updatedAt'] + '</p></div>';
+          content += '<table><tr><th><td> User n\': ' + user['id'] + ' Username : ' + user['username'] + '</th></td>';
+          content += '<th><td> ' + 'Firstname : ' + user['firstname'] + 'Lastname : ' + user['lastname'] + '</th></td>';
+          content += '<th><td> ' + 'Email : ' + user['email'] + '</th></td>';
+          content += '<th><td> ' + 'User created at : ' + user['createdAt'] + '</th></td>';
+          content += '<th><td> ' + 'User updated at : ' + user['updatedAt'] + '</th></td></tr></table>';
         });
           res.render("index", {  
               title: 'user List',
