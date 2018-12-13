@@ -8,13 +8,15 @@ const saltRounds = 10;
 
 //GET todos for UserId
 router.get('/:id/todos', (req, res) => {
-  if (!req.params.id) {
+  if (req.params.id == undefined || req.params.id == null) {
     return res.status(404).send('NOT FOUND')
+  }else{
+    console.log("Satan")
   }
+  console.log(req.params.id)
   Users.getAllTodosForUserId(req.params.id)
   .then((todos) =>
   {
-    console.log(todos)
     res.format({
       html: () => {//prepare content
         let content = ''
@@ -25,6 +27,7 @@ router.get('/:id/todos', (req, res) => {
           content += '<p> Created at ' + todo['createdAt'] + '</p>';
           content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>';
         });
+        console.log(content)
           res.render("index", {  
               title: 'Todo List for User: ' + req.params.id,
               content: content

@@ -6,7 +6,7 @@ module.exports = {
     return db.all("SELECT rowid AS id, * FROM todos")
   },
   async getAllTodosForUserId(userId) {
-    if(isNaN(userId)){
+    if(!userId){
       return Promise.reject({ message: 'Could not find id' })
     }
     return db.all("SELECT rowid AS id, * FROM todos WHERE userId = ?", userId)
