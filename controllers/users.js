@@ -5,6 +5,41 @@ const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+
+//GET todos for UserId
+router.get('/:id/todos', (req, res) => {
+  if (!req.params.id) {
+    return res.status(404).send('NOT FOUND')
+  }
+  Users.getAllTodosForUserId(req.params.id)
+  .then((todos) =>
+  {
+    console.log(todos)
+    res.format({
+      html: () => {//prepare content
+        let content = ''
+        
+        todos.forEach((todo) => {
+          content += '<div><h2>' + todo['id'] + '. ' + todo['name'] + '</h2>';
+          content += '<p>' + 'Status : ' + todo['completion'] + '</p>';
+          content += '<p> Created at ' + todo['createdAt'] + '</p>';
+          content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>';
+        });
+          res.render("index", {  
+              title: 'Todo List for User: ' + req.params.id,
+              content: content
+          })
+      },
+      json: () => {
+          res.json(todos)
+      }
+    })
+  })
+  .catch((err) => {
+    return res.status(404).send(err)
+  })
+})
+
 //GET adding User
 //DONE
 router.get('/adduser', (req, res) => { // need a VIEW
