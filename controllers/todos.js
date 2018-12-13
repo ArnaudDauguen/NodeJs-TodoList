@@ -8,7 +8,7 @@ let userId = 1
 
 
 //GET editing TODO
-//TODO
+//DONE
 router.get('/:id/edit', (req, res) => { // need a VIEW
   const todo = Todos.findOne(req.params.id)
   res.render("form_todo", {
@@ -20,7 +20,7 @@ router.get('/:id/edit', (req, res) => { // need a VIEW
 
 
 //GET adding TODO
-//TODO
+//DONE
 router.get('/add', (req, res) => { // need a VIEW
   res.render("form_todo", {
     title: "Add a todo",
@@ -63,7 +63,7 @@ router.get('/:id', (req, res) => { // need a VIEW
 
 
 //edit a todo
-//TODO
+//DONE
 router.patch('/:id', (req, res) => { // need a VIEW
   if (!req.params.id) {
     return res.status(404).send('NOT FOUND')
@@ -87,8 +87,6 @@ router.patch('/:id', (req, res) => { // need a VIEW
         res.redirect(301, '/todos')
       },
       json: () => {
-        const done = {message : 'sucess'};
-        res.json(done);
         res.json({message : 'sucess'});
       }
     })
@@ -105,20 +103,29 @@ router.delete('/:id', (req, res) => { // need a VIEW
   if (!req.params.id) {
     return res.status(404).send('NOT FOUND')
   }
-  Todos.delete(req.params.id)
-  .then(() => {
-    res.format({
-      html: () => {
-        res.redirect(301, '/todos')
-      },
-      json: () => {
-        res.json({message : 'sucess'})
-      }
+  Todos.findOne(req.params.id)
+  .then((todo) => {
+    if(!todo){
+      return res.status(404).send('NOT FOUND')
+    }
+    Todos.delete(req.params.id)
+    .then(() => {
+      res.format({
+        html: () => {
+          res.redirect(301, '/todos')
+        },
+        json: () => {
+          res.json({message : 'sucess'})
+        }
+      })
     })
+    
   })
   .catch((err) => {
     return res.status(404).send(err)
   })
+
+  
 })
 
 
@@ -132,8 +139,7 @@ router.post('/', (req, res) => { // need a VIEW
         res.redirect(301, '/todos')
       },
       json: () => {
-        const done = {message : 'sucess'};
-        res.json(done);
+        res.json({message : 'sucess'});
 
       }
     })
