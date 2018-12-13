@@ -46,7 +46,6 @@ router.get('/:id', (req, res) => { // need a VIEW
           
         res.render("show", {  
             title: 'Todo List',
-            name: req.body.userId,
             content: content
         })
       },
@@ -118,7 +117,7 @@ router.delete('/:id', (req, res) => { // need a VIEW
         }
       })
     })
-    
+
   })
   .catch((err) => {
     return res.status(404).send(err)
@@ -168,7 +167,6 @@ router.get('/', (req, res) => {
         });
           res.render("index", {  
               title: 'Todo List',
-              name: username,
               content: content
           })
       },
