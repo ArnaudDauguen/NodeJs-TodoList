@@ -175,7 +175,6 @@ router.get('/', (req, res) => {
   .catch((err) => {
     return res.status(404).send(err)
   })
-  
 })
 
 
