@@ -137,7 +137,6 @@ router.patch('/:id', (req, res) => { // need a VIEW
     changes.completion = req.body.completion;
   }
 
-  //changes.updatedAt = 0; // on crée le champ pour la requette SQL
   changes.id = req.params.id; //add id
 
   Todos.update(changes)
