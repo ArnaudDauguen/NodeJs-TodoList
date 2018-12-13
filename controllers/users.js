@@ -77,11 +77,12 @@ router.get('/', (req, res) => {
       html: () => {//prepare content
         let content = ''
         
-        users.forEach((user) => {//TODO
-          content += '<div><h2>' + user['id'] + '. ' + user['name'] + '</h2>';
-          content += '<p>' + 'Status : ' + user['completion'] + '</p>';
-          content += '<p> Created at ' + user['createdAt'] + '</p>';
-          content += '<p> Updated at ' + user['updatedAt'] + '</p></div>';
+        users.forEach((user) => {
+          content += '<div><h2> User n\': ' + user['id'] + ' Username : ' + user['username'] + '</h2>';
+          content += '<p>' + 'Firstname : ' + user['firstname'] + 'Lastname : ' + user['lastname'] + '</p>';
+          content += '<p> Email : ' + user['email'] + '</p>';
+          content += '<p> User created at : ' + user['createdAt'] + '</p>';
+          content += '<p> User updated at : ' + user['updatedAt'] + '</p></div>';
         });
           res.render("index", {  
               title: 'user List',
