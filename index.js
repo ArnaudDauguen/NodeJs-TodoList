@@ -6,6 +6,7 @@ api.set('views', __dirname + '/views');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override')
 
+
 db.open('api.db').then(() => {
   Promise.all([
     db.run("CREATE TABLE IF NOT EXISTS todos (name, completion, updatedAt, createdAt, userId)"),

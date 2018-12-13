@@ -2,6 +2,8 @@ const router = require('express')();
 //const router = require('express').Router();
 const Todos = require('./../models/todos');
 const _ = require('lodash');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 let username = "Toi";
 let userId = 1;
@@ -30,7 +32,7 @@ router.get('/', (req, res) => {
 
         todos.forEach(function(todo) {
           content += '<div><h2>' + todo['id'] + '. ' + todo['name'] + '</h2>';
-          content += '<p>' + todo['completion'] + '</p>';
+          content += '<p>' + 'Status : ' + todo['completion'] + '</p>';
           content += '<p> Created at ' + todo['createdAt'] + '</p>';
           content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>';
         });
@@ -76,10 +78,10 @@ router.get('/:id', (req, res) => { // need a VIEW
     res.format({
       html: () => {//prepare content
         let content = '';
-        content += '<div><h2>' + todo['name'] + '</h2>';
-        content += '<p>' + todo['completion'] + '</p>';
-        content += '<p> Created at ' + todo['created_at'] + '</p>';
-        content += '<p> Updated at ' + todo['updated_at'] + '</p></div>';
+        content += '<div><h2>' + todo['id'] + '. ' + todo['name'] + '</h2>';
+        content += '<p>' + 'Status : ' + todo['completion'] + '</p>';
+        content += '<p> Created at ' + todo['createdAt'] + '</p>';
+        content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>';
           
         res.render("show", {  
             title: 'Todo List',
@@ -98,6 +100,15 @@ router.get('/:id', (req, res) => { // need a VIEW
 });
 
 
+//GET adding User
+//WIP
+router.get('/adduser', (req, res) => { // need a VIEW
+  res.render("form_user", {
+  title: "Create a user",
+  method: "POST"
+  })
+})
+
 // add a new todo
 //DONE
 router.post('/', (req, res) => { // need a VIEW
@@ -108,7 +119,8 @@ router.post('/', (req, res) => { // need a VIEW
         res.redirect(301, '/todos')
       },
       json: () => {
-        res.json(todo)
+        const done = {message : 'sucess'};
+        res.json(done);
       }
     })
   })
@@ -119,7 +131,30 @@ router.post('/', (req, res) => { // need a VIEW
 
 
 //CREATE USER
-//TODO
+//WIP
+router.post('/', (res, req) => {
+  Todos.createUser([req.body.firstname, req.body.lastname, req.body.username, req.body.passsword, req.body.email])
+  .then(async () => {
+    await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const crypt = bcrypt.hash(req.body.passsword, saltRounds)
+        resolve(crypt)
+      }, 1);
+    });
+    res.format({
+      html: () => {
+        res.redirect(301, '/todos');
+      },
+      json: () => {
+        const done = { message: 'sucess' };
+        res.json(done);
+      }
+    });
+  })
+  .catch((err) => {
+    return res.status(404).send(err)
+  })
+})
 
 //edit a todo
 //TODO
@@ -146,7 +181,8 @@ router.patch('/:id', (req, res) => { // need a VIEW
         res.redirect(301, '/todos')
       },
       json: () => {
-        res.json(todo)
+        const done = {message : 'sucess'};
+        res.json(done);
       }
     })
   })
