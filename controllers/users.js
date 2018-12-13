@@ -1,6 +1,6 @@
 const router = require('express')();
 //const router = require('express').Router();
-const Todos = require('./../models/todos');
+const users = require('./../models/todos');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -21,11 +21,11 @@ router.delete('/:id', (req, res) => { // find a route
   if (!req.params.id) {
     return res.status(404).send('NOT FOUND');
   }
-  Todos.deleteUser(req.params.id)
+  users.deleteUser(req.params.id)
   .then(() => {
     res.format({
       html: () => {
-        res.redirect(301, '/todos');
+        res.redirect(301, '/users');
       },
       json: () => {
         res.json({message : 'sucess'});
@@ -41,7 +41,7 @@ router.delete('/:id', (req, res) => { // find a route
 //CREATE USER
 //WIP
 router.post('/', (res, req) => {
-    Todos.createUser([req.body.firstname, req.body.lastname, req.body.username, req.body.passsword, req.body.email])
+    users.createUser([req.body.firstname, req.body.lastname, req.body.username, req.body.passsword, req.body.email])
     .then(async () => {
       await new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -51,7 +51,7 @@ router.post('/', (res, req) => {
       });
       res.format({
         html: () => {
-          res.redirect(301, '/todos');
+          res.redirect(301, '/users');
         },
         json: () => {
           const done = { message: 'sucess' };
@@ -63,6 +63,41 @@ router.post('/', (res, req) => {
       return res.status(404).send(err)
     })
   })
+
+
+// GET all USERS
+//TODO
+router.get('/', (req, res) => {
+
+  users.getAll()
+  .then((users) =>
+  {
+
+    res.format({
+      html: () => {//prepare content
+        let content = ''
+        
+        users.forEach((user) => {//TODO
+          content += '<div><h2>' + user['id'] + '. ' + user['name'] + '</h2>';
+          content += '<p>' + 'Status : ' + user['completion'] + '</p>';
+          content += '<p> Created at ' + user['createdAt'] + '</p>';
+          content += '<p> Updated at ' + user['updatedAt'] + '</p></div>';
+        });
+          res.render("index", {  
+              title: 'user List',
+              name: username,
+              content: content
+          })
+      },
+      json: () => {
+          res.json(users)
+      }
+    })
+  })
+  .catch((err) => {
+    return res.status(404).send(err)
+  })
+})
 
 
 module.exports = router
