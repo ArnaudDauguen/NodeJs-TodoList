@@ -37,18 +37,16 @@ module.exports = {
     return db.run("DELETE FROM users WHERE rowid = ?", id)
   },
   async update(params) {
-    let string = ''
+    let string = '';
 
     for (k in params) {
       if (k !== 'id') {
-        string += k + ' = ?,'
+        string += k + ' = ?,';
       }
     }
 
-    string = string.substring(0, string.length - 1); // Remove last comma
-
-    const data = _.values(params)
-    const { changes } = await db.run("UPDATE todos SET " + string + " WHERE rowid = ?", data)
+    const data = _.values(params);
+    const { changes } = await db.run("UPDATE todos SET " + string + " updatedAt = date('now') WHERE rowid = ?", data)
     
     if (changes !== 0) {
       return this.findOne(params.id)

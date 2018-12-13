@@ -4,6 +4,7 @@
     <title>{{title}}</title>
 </head>
 <body>
+    {{#iff method '===' 'POST'}}
     <h1>Create a todo</h1>
     <form action="/todos", method="POST">
         <label for="message">Message :</label>
@@ -19,5 +20,22 @@
             <input type="submit" value="Create">
         </p>
     </form>
+    {{else}}
+    <h1>Edit a todo</h1>
+    <form action='/todos/' + todo.id + '?_method=PATCH', method="POST">
+        <label for="message">Message :</label>
+        <input class="input" id="message" name="message" type="message" value=todo.message />
+        <br/>
+        <label for="completion">Completion :</label>
+        <select name="completion" id="completion">
+            <option value="todo">Todo</option>
+            <option value="inprogress">In Progress</option>
+            <option value="done">Done</option>
+        </select>
+        <p>
+            <input type="submit" value="Update">
+        </p>
+    </form>
+    {{/iff}}
 </body>
 </html>

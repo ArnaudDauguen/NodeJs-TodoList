@@ -121,6 +121,7 @@ router.post('/', (req, res) => { // need a VIEW
       json: () => {
         const done = {message : 'sucess'};
         res.json(done);
+        res.json({message : 'sucess'});
       }
     })
   })
@@ -163,26 +164,28 @@ router.patch('/:id', (req, res) => { // need a VIEW
     return res.status(404).send('NOT FOUND');
   }
 
-  let changes = {}
+  let changes = {};
 
-  if (req.body.message) {
-    changes.message = req.body.message
+  if (req.body.name) {
+    changes.name = req.body.name;
   }
   if (req.body.completion) {
-    changes.completion = req.body.completion
+    changes.completion = req.body.completion;
   }
-  // req.body.updated_at = new Date(); // Update time
-  let paramId = req.params.id; // Add id to body
 
-  Todos.update(changes, paramId)
+  changes.id = req.params.id; //add id
+
+  Todos.update(changes)
   .then((todo) => {
     res.format({
       html: () => {
         res.redirect(301, '/todos')
       },
       json: () => {
+
         const done = {message : 'sucess'};
         res.json(done);
+        res.json({message : 'sucess'});
       }
     })
   })
@@ -205,8 +208,7 @@ router.delete('/:id', (req, res) => { // need a VIEW
         res.redirect(301, '/todos');
       },
       json: () => {
-        const done = {message : 'sucess'};
-        res.json(done);
+        res.json({message : 'sucess'});
       }
     })
   })
