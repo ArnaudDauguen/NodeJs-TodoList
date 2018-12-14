@@ -8,7 +8,7 @@ const saltRounds = 10;
 
 //GET todos for UserId
 router.get('/:id/todos', (req, res) => {
-  if (req.params.id == undefined || req.params.id == null) {
+  if (req.params.id === undefined || req.params.id === null) {
     return res.status(404).send('NOT FOUND')
   }else{
     console.log("Satan")
