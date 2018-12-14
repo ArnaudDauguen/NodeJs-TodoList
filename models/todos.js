@@ -6,6 +6,7 @@ module.exports = {
     return db.all("SELECT rowid AS id, * FROM todos")
   },
   async getAllTodosForUserId(userId) {
+    userId = parseInt(userId)
     if(!userId){
       return Promise.reject({ message: 'Could not find id' })
     }

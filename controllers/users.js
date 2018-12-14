@@ -10,15 +10,11 @@ const saltRounds = 10;
 router.get('/:id/todos', (req, res) => {
   if (req.params.id === undefined || req.params.id === null) {
     return res.status(404).send('NOT FOUND')
-  }else{
-    console.log("Satan")
   }
-  console.log(req.params.id)
   Users.getAllTodosForUserId(req.params.id)
-  .then((todos) =>
-  {
+  .then((todos) => {
     res.format({
-      html: () => {//prepare content
+      html: () => { // Prepare content
         let content = ''
         
         todos.forEach((todo) => {
