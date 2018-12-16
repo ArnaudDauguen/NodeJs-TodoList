@@ -23,7 +23,7 @@ router.get('/:id/todos', (req, res) => {
           content += '<p> Created at ' + todo['createdAt'] + '</p>';
           content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>';
         });
-        console.log(content)
+        
           res.render("index", {  
               title: 'Todo List for User: ' + req.params.id,
               content: content
