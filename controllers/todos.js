@@ -59,7 +59,7 @@ router.get('/:id', (req, res, next) => {
     }
     res.format({
       html: () => { // Prepare content
-        let content = '<table><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
+        let content = '<table class="table"><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
         content += '<tr>'
         content += '<td>' + todo['id'] + '</td>'
         content += '<td>' + todo['name'] + '</td>'
@@ -183,7 +183,7 @@ router.get('/', (req, res, next) => {
 
     res.format({
       html: () => { // Prepare content
-        let content = '<table><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
+        let content = '<table class="table"><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
         
         todos.forEach((todo) => {
           content += '<tr>'
