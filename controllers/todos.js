@@ -8,7 +8,7 @@ let userId = 1
 
 // GET editing todo
 // DONE
-router.get('/:id/edit', (req, res) => {
+router.get('/:id/edit', (req, res, next) => {
   const todo = Todos.findOne(req.params.id)
   res.render("form_todo", {
     title: "Patch a todo",
@@ -20,12 +20,12 @@ router.get('/:id/edit', (req, res) => {
 
 // GET adding todo
 // DONE
-router.get('/add', (req, res) => {
+router.get('/add', (req, res, next) => {
   let userList = ''
   Todos.getAllUserIds()
   .then((userIds) => {
     if (!userIds) {
-      return res.status(404).send('CREATE A USER FIRST')
+      return next(new Error("500 NEED A USER FIRST"))
     }
 
     userIds.foreach((id) => {
@@ -39,19 +39,23 @@ router.get('/add', (req, res) => {
     })
   })
   .catch((err) => {
-    return res.status(404).send(err)
+    console.log(err)
+    return next(err)
   })
 })
 
 
 // GET a todo
 // DONE
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, res, next) => {
   if (!req.params.id) {
-    return res.status(404).send('NOT FOUND')
+    return next(new Error("404 NOT FOUND"))
   }
   Todos.findOne(req.params.id)
   .then((todo) => {
+    if (!todo) {
+      return next(new Error("404 NOT FOUND"))
+    }
     res.format({
       html: () => { // Prepare content
         let content = '<table><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
@@ -75,14 +79,15 @@ router.get('/:id', (req, res) => {
     })
   })
   .catch((err) => {
-    return res.status(404).send(err)
+    console.log(err)
+    return next(err)
   })
 })
 
 
 // EDIT a todo
 // DONE
-router.patch('/:id', (req, res) => {
+router.patch('/:id', (req, res, next) => {
   if (!req.params.id) {
     return res.status(404).send('NOT FOUND')
   }
@@ -110,21 +115,22 @@ router.patch('/:id', (req, res) => {
     })
   })
   .catch((err) => {
-    return res.status(404).send(err)
+    console.log(err)
+    return next(err)
   })
 })
 
 
 // DELETE a todo
 //DONE
-router.delete('/:id', (req, res) => {
+router.delete('/:id', (req, res, next) => {
   if (!req.params.id) {
-    return res.status(404).send('NOT FOUND')
+    return next(new Error("404 NOT FOUND"))
   }
   Todos.findOne(req.params.id)
   .then((todo) => {
     if(!todo){
-      return res.status(404).send('NOT FOUND')
+      return next(new Error("404 NOT FOUND"))
     }
     Todos.delete(req.params.id)
     .then(() => {
@@ -139,14 +145,15 @@ router.delete('/:id', (req, res) => {
     })
   })
   .catch((err) => {
-    return res.status(404).send(err)
+    console.log(err)
+    return next(err)
   })
 })
 
 
 // ADD a new todo
 // DONE
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
   Todos.create([req.body.message, req.body.completion, userId])
   .then((todo) => {
     res.format({
@@ -160,13 +167,14 @@ router.post('/', (req, res) => {
     })
   })
   .catch((err) => {
-    return res.status(404).send(err)
+    console.log(err)
+    return next(err)
   })
 })
 
 // GET all todos
 // DONE
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
 
   Todos.getAll()
   .then((todos) =>
@@ -198,8 +206,29 @@ router.get('/', (req, res) => {
     })
   })
   .catch((err) => {
-    return res.status(404).send(err)
+    console.log(err)
+    return next(err)
   })
 })
+
+
+router.use((err, req, res, next) => {
+  res.format({
+    html: () => {
+      console.log("error : " + err)
+      res.render("error404", {
+        error: err
+      })
+    },
+    json: () => {
+      console.log("error : " + err)
+      res.json({
+        message: "error 500",
+        description: "Server Error"
+      })
+    }
+  })
+})
+
 
 module.exports = router

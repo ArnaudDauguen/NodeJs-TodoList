@@ -7,9 +7,9 @@ const saltRounds = 10;
 
 
 //GET todos for UserId
-router.get('/:id/todos', (req, res) => {
+router.get('/:id/todos', (req, res, next) => {
   if (req.params.id === undefined || req.params.id === null) {
-    return res.status(404).send('NOT FOUND')
+    return next(new Error("404 NOT FOUND"))
   }
   Users.getAllTodosForUserId(req.params.id)
   .then((todos) => {
@@ -41,14 +41,15 @@ router.get('/:id/todos', (req, res) => {
     })
   })
   .catch((err) => {
-    return res.status(404).send(err)
+    console.log(err)
+    return next(err)
   })
 })
 
 
 // GET editing User
 // WIP
-router.get('/:id/edit', (req, res) => { 
+router.get('/:id/edit', (req, res, next) => { 
   const user = Users.findOneUser(req.params.id)
   res.render("form_user", {
     title: "Patch a user",
@@ -59,7 +60,7 @@ router.get('/:id/edit', (req, res) => {
 
 // GET adding User
 // DONE
-router.get('/add', (req, res) => {
+router.get('/add', (req, res, next) => {
     res.render("form_user", {
     title: "Create a user",
     idAndMethod: "/?_method=POST"
@@ -69,12 +70,15 @@ router.get('/add', (req, res) => {
 
 // GET a user
 // DONE
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, res, next) => {
   if (!req.params.id) {
-    return res.status(404).send('NOT FOUND')
+    return next(new Error("404 NOT FOUND"))
   }
   Users.findOneUser(req.params.id)
   .then((user) => {
+    if(!user){
+      return next(new Error("404 NOT FOUND"))
+    }
     res.format({
       html: () => { // Prepare content
         let content = '<table><tr><th>Id</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>createdAt</th><th>updatedAt</th></tr>'
@@ -100,16 +104,17 @@ router.get('/:id', (req, res) => {
     })
   })
   .catch((err) => {
-    return res.status(404).send(err)
+    console.log(err)
+    return next(err)
   })
 })
 
 
 // EDIT a user
 // DONE
-router.patch('/:id', (req, res) => {
+router.patch('/:id', (req, res, next) => {
   if (!req.params.id) {
-    return res.status(404).send('NOT FOUND')
+    return next(new Error("404 NOT FOUND"))
   }
 
   let changes = {}
@@ -144,21 +149,22 @@ router.patch('/:id', (req, res) => {
     })
   })
   .catch((err) => {
-    return res.status(404).send(err)
+    console.log(err)
+    return next(err)
   })
 })
 
 
 // DELETE a user
 // DONE
-router.delete('/:id', (req, res) => {
+router.delete('/:id', (req, res, next) => {
   if (!req.params.id) {
-    return res.status(404).send('NOT FOUND');
+    return next(new Error("404 NOT FOUND"))
   }
   Users.findOneUser(req.params.id)
   .then((user) => {
     if(!user){
-      return res.status(404).send('NOT FOUND')
+      return next(new Error("404 NOT FOUND"))
     }
     Users.deleteUser(req.params.id)
     .then(() => {
@@ -173,7 +179,8 @@ router.delete('/:id', (req, res) => {
     })
   })
   .catch((err) => {
-    return res.status(404).send(err)
+    console.log(err)
+    return next(err)
   })
 })
 
@@ -181,7 +188,7 @@ router.delete('/:id', (req, res) => {
 
 // CREATE users
 // WIP
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
   let promise = Promise.resolve()
   .then(async () => {
     let crypt = ''
@@ -205,14 +212,14 @@ router.post('/', (req, res) => {
   })
   .catch((err) => {
     console.log(err)
-    return res.status(404).send(err)
+    return next(err)
   })
 })
 
 
 // GET all users
 // DONE
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
 
   Users.getAllUsers()
   .then((users) =>
@@ -245,7 +252,8 @@ router.get('/', (req, res) => {
     })
   })
   .catch((err) => {
-    return res.status(404).send(err)
+    console.log(err)
+    return next(err)
   })
 })
 
@@ -254,7 +262,9 @@ router.use((err, req, res, next) => {
   res.format({
     html: () => {
       console.log("error : " + err)
-      res.render("error404")
+      res.render("error404", {
+        error: err
+      })
     },
     json: () => {
       console.log("error : " + err)
