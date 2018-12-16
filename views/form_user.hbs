@@ -2,28 +2,36 @@
 <html lang="fr">
 <head>
     <title>{{title}}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-    <h1>Create a User</h1>
+    <div class="container text-center mt-2">
+        <h1>User manager</h1>
+    </div>
     <form action="/users{{idAndMethod}}", method="POST">
-        <label for="username">Username :</label>
-        <input class="input" id="username" name="username" type="text" value=""/>
-        <br/>
-        <label for="lastname">Lastname :</label>
-        <input class="input" id="lastname" name="lastname" type="text" value=""/>
-        <br/>
-        <label for="firstname">Firstname :</label>
-        <input class="input" id="firstname" name="firstname" type="text" value=""/>
-        <br/>
-        <label for="password">Password :</label>
-        <input class="input" id="password" name="password" type="password" value=""/>
-        <br/>
-        <label for="email">Email :</label>
-        <input class="input" id="email" name="email" type="email" value=""/>
-        <br/>
-        <p>
-            <input type="submit" value="Create user">
-        </p>
+        <div class="container">
+            <div class="form-group">
+                <label for="username">Username :</label>
+                <input class="form-control" id="username" name="username" type="text" value=""/>
+            </div>
+            <div class="form-group">
+                <label for="lastname">Lastname :</label>
+                <input class="form-control" id="lastname" name="lastname" type="text" value=""/>
+            </div>
+            <div class="form-group">
+                <label for="firstname">Firstname :</label>
+                <input class="form-control" id="firstname" name="firstname" type="text" value=""/>
+            </div>
+            <div class="form-group">
+                <label for="password">Password :</label>
+                <input class="form-control" id="password" name="password" type="password" value=""/>
+            </div>
+            <div class="form-group">
+                <label for="email">Email :</label>
+                <input class="form-control" id="email" name="email" type="email" value=""/>
+            </div>
+             <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
     </form>
 </body>
 </html>

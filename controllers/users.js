@@ -15,8 +15,8 @@ router.get('/:id/todos', (req, res, next) => {
   .then((todos) => {
     res.format({
       html: () => { // Prepare content
-
-        let content = '<table><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
+        
+        let content = '<table class="table"><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
         
         todos.forEach((todo) => {
           content += '<tr>'
@@ -81,7 +81,8 @@ router.get('/:id', (req, res, next) => {
     }
     res.format({
       html: () => { // Prepare content
-        let content = '<table><tr><th>Id</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>createdAt</th><th>updatedAt</th></tr>'
+
+        let content = '<table class="table"><tr><th>Id</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>createdAt</th><th>updatedAt</th></tr>'
         content += '<tr>'
         content += '<td>' + user['id'] + '</td>'
         content += '<td>' + user['username'] + '</td>'
@@ -226,7 +227,7 @@ router.get('/', (req, res, next) => {
   {
     res.format({
       html: () => { // Prepare content
-        let content = '<table><tr><th>Id</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>createdAt</th><th>updatedAt</th></tr>'
+        let content = '<table class="table"><tr><th>Id</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>createdAt</th><th>updatedAt</th></tr>'
         
         users.forEach((user) => {
           content += '<tr>'
@@ -241,8 +242,9 @@ router.get('/', (req, res, next) => {
         })
 
         content += '</table>'
+        
         res.render("index", {  
-            title: 'user List',
+            title: 'User list',
             content: content
         })
       },
