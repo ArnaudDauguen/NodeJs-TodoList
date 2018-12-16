@@ -6,10 +6,10 @@
 </head>
 <body>
     <div class="container text-center mt-2">
-        <h1>User manager</h1>
+        <h1>{{formTitle}}</h1>
     </div>
     <form action="/users{{idAndMethod}}", method="POST">
-        <div class="container">
+        <div class="container mt-5">
             <div class="form-group">
                 <label for="username">Username :</label>
                 <input class="form-control" id="username" name="username" type="text" value=""/>
