@@ -15,19 +15,25 @@ router.get('/:id/todos', (req, res) => {
   .then((todos) => {
     res.format({
       html: () => { // Prepare content
-        let content = ''
+
+        let content = '<table><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
         
         todos.forEach((todo) => {
-          content += '<div><h2>' + todo['id'] + '. ' + todo['name'] + '</h2>';
-          content += '<p>' + 'Status : ' + todo['completion'] + '</p>';
-          content += '<p> Created at ' + todo['createdAt'] + '</p>';
-          content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>';
-        });
-        
-          res.render("index", {  
-              title: 'Todo List for User: ' + req.params.id,
-              content: content
-          })
+          content += '<tr>'
+          content += '<td>' + todo['id'] + '</td>'
+          content += '<td>' + todo['name'] + '</td>'
+          content += '<td>' + todo['completion'] + '</td>'
+          content += '<td>' + todo['createdAt'] + '</td>'
+          content += '<td>' + todo['updatedAt'] + '</td>'
+          content += '</tr>'
+        })
+
+        content += '</table>'
+
+        res.render("index", {  
+            title: 'Todo List for User: ' + req.params.id,
+            content: content
+        })
       },
       json: () => {
           res.json(todos)
@@ -71,20 +77,25 @@ router.get('/:id', (req, res) => {
   .then((user) => {
     res.format({
       html: () => { // Prepare content
-        let content = ''
-        content += '<table><tr><th><td> User n\': ' + user['id'] + ' Username : ' + user['username'] + '</th></td>';
-        content += '<th><td> ' + 'Firstname : ' + user['firstname'] + 'Lastname : ' + user['lastname'] + '</th></td>';
-        content += '<th><td> ' + 'Email : ' + user['email'] + '</th></td>';
-        content += '<th><td> ' + 'User created at : ' + user['createdAt'] + '</th></td>';
-        content += '<th><td> ' + 'User updated at : ' + user['updatedAt'] + '</th></td></tr></table>';
-       
+        let content = '<table><tr><th>Id</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>createdAt</th><th>updatedAt</th></tr>'
+        content += '<tr>'
+        content += '<td>' + user['id'] + '</td>'
+        content += '<td>' + user['username'] + '</td>'
+        content += '<td>' + user['firstname'] + '</td>'
+        content += '<td>' + user['lastname'] + '</td>'
+        content += '<td>' + user['email'] + '</td>'
+        content += '<td>' + user['createdAt'] + '</td>'
+        content += '<td>' + user['updatedAt'] + '</td>'
+        content += '</tr>'
+        content += '</table>'
+
         res.render("show", {  
-            title: 'Todo List',
-            content: content
+          title: 'User ' + user['username'],
+          content: content
         })
       },
       json: () => {
-          res.json(todo)
+        res.json(user)
       }
     })
   })
@@ -170,29 +181,33 @@ router.delete('/:id', (req, res) => {
 
 // CREATE users
 // WIP
-router.post('/', (res, req) => {
-    Users.createUser([req.body.firstname, req.body.lastname, req.body.username, req.body.passsword, req.body.email])
-    .then(async () => {
-      await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          const crypt = bcrypt.hash(req.body.passsword, saltRounds)
-          resolve(crypt)
-        }, 1);
-      });
-      res.format({
-        html: () => {
-          res.redirect(301, '/users');
-        },
-        json: () => {
-          const done = { message: 'sucess'};
-          res.json(done);
-        }
-      });
+router.post('/', (req, res) => {
+  let promise = Promise.resolve()
+  .then(async () => {
+    let crypt = ''
+    await new Promise((resolve, reject) => {
+        crypt = bcrypt.hash(req.body.password, saltRounds)
+        resolve(crypt)
     })
-    .catch((err) => {
-      return res.status(404).send(err)
+    return crypt
+  })
+  .then((encryptedPassword) => {
+    Users.createUser([req.body.firstname, req.body.lastname, req.body.username, encryptedPassword, req.body.email])
+    .then(() => {})
+    res.format({
+      html: () => {
+        res.redirect(301, '/users')
+      },
+      json: () => {
+        res.json({ message: 'sucess'})
+      }
     })
   })
+  .catch((err) => {
+    console.log(err)
+    return res.status(404).send(err)
+  })
+})
 
 
 // GET all users
@@ -202,23 +217,27 @@ router.get('/', (req, res) => {
   Users.getAllUsers()
   .then((users) =>
   {
-
     res.format({
       html: () => { // Prepare content
-        let content = ''
+        let content = '<table><tr><th>Id</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>createdAt</th><th>updatedAt</th></tr>'
         
         users.forEach((user) => {
-          content += '<table><tr><th><td> User n\': ' + user['id'] + ' Username : ' + user['username'] + '</th></td>';
-          content += '<th><td> ' + 'Firstname : ' + user['firstname'] + 'Lastname : ' + user['lastname'] + '</th></td>';
-          content += '<th><td> ' + 'Email : ' + user['email'] + '</th></td>';
-          content += '<th><td> ' + 'User created at : ' + user['createdAt'] + '</th></td>';
-          content += '<th><td> ' + 'User updated at : ' + user['updatedAt'] + '</th></td></tr></table>';
-        });
-          res.render("index", {  
-              title: 'user List',
-              name: username,
-              content: content
-          })
+          content += '<tr>'
+          content += '<td>' + user['id'] + '</td>'
+          content += '<td>' + user['username'] + '</td>'
+          content += '<td>' + user['firstname'] + '</td>'
+          content += '<td>' + user['lastname'] + '</td>'
+          content += '<td>' + user['email'] + '</td>'
+          content += '<td>' + user['createdAt'] + '</td>'
+          content += '<td>' + user['updatedAt'] + '</td>'
+          content += '</tr>'
+        })
+
+        content += '</table>'
+        res.render("index", {  
+            title: 'user List',
+            content: content
+        })
       },
       json: () => {
           res.json(users)
@@ -229,5 +248,23 @@ router.get('/', (req, res) => {
     return res.status(404).send(err)
   })
 })
+
+
+router.use((err, req, res, next) => {
+  res.format({
+    html: () => {
+      console.log("error : " + err)
+      res.render("error404")
+    },
+    json: () => {
+      console.log("error : " + err)
+      res.json({
+        message: "error 500",
+        description: "Server Error"
+      })
+    }
+  })
+})
+
 
 module.exports = router

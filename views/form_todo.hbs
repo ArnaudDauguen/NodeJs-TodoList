@@ -14,6 +14,9 @@
             <option value="Todo">Todo</option>
             <option value="InProgress">In Progress</option>
             <option value="Done">Done</option>
+        <select name="userId" id="userId">
+            {{{userList}}}
+        </select>
         </select>
         <p>
             <input type="submit" value="Create">
@@ -21,3 +24,16 @@
     </form>
 </body>
 </html>
+
+
+<!-- Formulaire dans les pages :
+    let content = '<table><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
+    content += '<tr>'
+    content += '<td>' + todo['id'] + '</td>'
+    content += '<td>' + todo['name'] + '</td>'
+    content += '<td>' + todo['completion'] + '</td>'
+    content += '<td>' + todo['createdAt'] + '</td>'
+    content += '<td>' + todo['updatedAt'] + '</td>'
+    content += '</tr>'
+    content += '</table>'
+-->
