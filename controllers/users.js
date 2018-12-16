@@ -174,11 +174,8 @@ router.post('/', (req, res) => {
   .then(async () => {
     let crypt = ''
     await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        console.log(req.body.password)
         crypt = bcrypt.hash(req.body.password, saltRounds)
         resolve(crypt)
-      }, 1)
     })
     return crypt
   })
