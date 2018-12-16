@@ -21,9 +21,25 @@ router.get('/:id/edit', (req, res) => {
 // GET adding todo
 // DONE
 router.get('/add', (req, res) => {
-  res.render("form_todo", {
-    title: "Add a todo",
-    idAndMethod: "/?_method=POST"
+  let userList = ''
+  Todos.getAllUserIds()
+  .then((userIds) => {
+    if (!userIds) {
+      return res.status(404).send('CREATE A USER FIRST')
+    }
+
+    userIds.foreach((id) => {
+      userList += '<option value="user' + id + '">' + id + '</option>'
+    })
+
+    res.render("form_todo", {
+      title: "Add a todo",
+      idAndMethod: "/?_method=POST",
+      userList : userList
+    })
+  })
+  .catch((err) => {
+    return res.status(404).send(err)
   })
 })
 
@@ -41,8 +57,9 @@ router.get('/:id', (req, res) => {
         let content = ''
         content += '<div><h2>' + todo['id'] + '. ' + todo['name'] + '</h2>'
         content += '<p>' + 'Status : ' + todo['completion'] + '</p>'
-        content += '<p> Created at ' + todo['createdAt'] + '</p>'
-        content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>'
+        content += '<p> UserID :  ' + todo['userId'] + '</p>'
+        content += '<p> Created at : ' + todo['createdAt'] + '</p>'
+        content += '<p> Updated at : ' + todo['updatedAt'] + '</p></div>'
           
         res.render("show", {  
             title: 'Todo List',

@@ -27,12 +27,12 @@ api.use(methodOverride('_method'))
 api.use('/todos', require('./controllers/todos.js'))
 api.use('/users', require('./controllers/users.js'))
 
-// api.all('/', (req, res, next) => {
-//   res.redirect(301, '/todos')
-// })
-// api.get('*', (req, res, next) => {
-//   res.redirect(301, '/todos')
-// })
+api.all('/', (req, res, next) => {
+  res.redirect(301, '/todos')
+})
+api.get('*', (req, res, next) => {
+  res.redirect(301, '/todos')
+})
 
 api.listen(3000)
 

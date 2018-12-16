@@ -23,7 +23,6 @@ router.get('/:id/todos', (req, res) => {
           content += '<p> Created at ' + todo['createdAt'] + '</p>';
           content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>';
         });
-        console.log(content)
           res.render("index", {  
               title: 'Todo List for User: ' + req.params.id,
               content: content
@@ -170,29 +169,36 @@ router.delete('/:id', (req, res) => {
 
 // CREATE users
 // WIP
-router.post('/', (res, req) => {
-    Users.createUser([req.body.firstname, req.body.lastname, req.body.username, req.body.passsword, req.body.email])
-    .then(async () => {
-      await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          const crypt = bcrypt.hash(req.body.passsword, saltRounds)
-          resolve(crypt)
-        }, 1);
-      });
-      res.format({
-        html: () => {
-          res.redirect(301, '/users');
-        },
-        json: () => {
-          const done = { message: 'sucess'};
-          res.json(done);
-        }
-      });
+router.post('/', (req, res) => {
+  let promise = Promise.resolve()
+  .then(async () => {
+    let crypt = ''
+    await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        console.log(req.body.password)
+        crypt = bcrypt.hash(req.body.password, saltRounds)
+        resolve(crypt)
+      }, 1)
     })
-    .catch((err) => {
-      return res.status(404).send(err)
+    return crypt
+  })
+  .then((encryptedPassword) => {
+    Users.createUser([req.body.firstname, req.body.lastname, req.body.username, encryptedPassword, req.body.email])
+    .then(() => {})
+    res.format({
+      html: () => {
+        res.redirect(301, '/users')
+      },
+      json: () => {
+        res.json({ message: 'sucess'})
+      }
     })
   })
+  .catch((err) => {
+    console.log(err)
+    return res.status(404).send(err)
+  })
+})
 
 
 // GET all users
