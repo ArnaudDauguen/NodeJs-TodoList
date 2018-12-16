@@ -54,20 +54,23 @@ router.get('/:id', (req, res) => {
   .then((todo) => {
     res.format({
       html: () => { // Prepare content
-        let content = ''
-        content += '<div><h2>' + todo['id'] + '. ' + todo['name'] + '</h2>'
-        content += '<p>' + 'Status : ' + todo['completion'] + '</p>'
-        content += '<p> UserID :  ' + todo['userId'] + '</p>'
-        content += '<p> Created at : ' + todo['createdAt'] + '</p>'
-        content += '<p> Updated at : ' + todo['updatedAt'] + '</p></div>'
-          
+        let content = '<table><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
+        content += '<tr>'
+        content += '<td>' + todo['id'] + '</td>'
+        content += '<td>' + todo['name'] + '</td>'
+        content += '<td>' + todo['completion'] + '</td>'
+        content += '<td>' + todo['createdAt'] + '</td>'
+        content += '<td>' + todo['updatedAt'] + '</td>'
+        content += '</tr>'
+        content += '</table>'
+
         res.render("show", {  
             title: 'Todo List',
             content: content
         })
       },
       json: () => {
-          res.json(todo)
+        res.json(todo)
       }
     })
   })
@@ -171,18 +174,23 @@ router.get('/', (req, res) => {
 
     res.format({
       html: () => { // Prepare content
-        let content = ''
+        let content = '<table><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
         
         todos.forEach((todo) => {
-          content += '<div><h2>' + todo['id'] + '. ' + todo['name'] + '</h2>';
-          content += '<p>' + 'Status : ' + todo['completion'] + '</p>';
-          content += '<p> Created at ' + todo['createdAt'] + '</p>';
-          content += '<p> Updated at ' + todo['updatedAt'] + '</p></div>';
-        });
-          res.render("index", {  
-              title: 'Todo List',
-              content: content
-          })
+          content += '<tr>'
+          content += '<td>' + todo['id'] + '</td>'
+          content += '<td>' + todo['name'] + '</td>'
+          content += '<td>' + todo['completion'] + '</td>'
+          content += '<td>' + todo['createdAt'] + '</td>'
+          content += '<td>' + todo['updatedAt'] + '</td>'
+          content += '</tr>'
+        })
+        
+        content += '</table>'
+        res.render("index", {  
+            title: 'Todo List',
+            content: content
+        })
       },
       json: () => {
           res.json(todos)
