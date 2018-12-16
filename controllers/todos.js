@@ -10,6 +10,7 @@ let userId = 1
 // DONE
 router.get('/:id/edit', (req, res, next) => {
   const todo = Todos.findOne(req.params.id)
+  //gerer todo inexistatne
   res.render("form_todo", {
     title: "Patch a todo",
     todo: todo,
