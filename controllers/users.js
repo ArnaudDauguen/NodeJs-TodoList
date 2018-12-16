@@ -205,23 +205,27 @@ router.get('/', (req, res) => {
   Users.getAllUsers()
   .then((users) =>
   {
-
     res.format({
       html: () => { // Prepare content
-        let content = ''
+        let content = '<table><tr><th>Id</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>createdAt</th><th>updatedAt</th></tr>'
         
         users.forEach((user) => {
-          content += '<table><tr><th><td> User n\': ' + user['id'] + ' Username : ' + user['username'] + '</th></td>';
-          content += '<th><td> ' + 'Firstname : ' + user['firstname'] + 'Lastname : ' + user['lastname'] + '</th></td>';
-          content += '<th><td> ' + 'Email : ' + user['email'] + '</th></td>';
-          content += '<th><td> ' + 'User created at : ' + user['createdAt'] + '</th></td>';
-          content += '<th><td> ' + 'User updated at : ' + user['updatedAt'] + '</th></td></tr></table>';
-        });
-          res.render("index", {  
-              title: 'user List',
-              name: username,
-              content: content
-          })
+          content += '<tr>'
+          content += '<td>' + user['id'] + '</td>'
+          content += '<td>' + user['username'] + '</td>'
+          content += '<td>' + user['firstname'] + '</td>'
+          content += '<td>' + user['lastname'] + '</td>'
+          content += '<td>' + user['email'] + '</td>'
+          content += '<td>' + user['createdAt'] + '</td>'
+          content += '<td>' + user['updatedAt'] + '</td>'
+          content += '</tr>'
+        })
+
+        content += '</table>'
+        res.render("index", {  
+            title: 'user List',
+            content: content
+        })
       },
       json: () => {
           res.json(users)
