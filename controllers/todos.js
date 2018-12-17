@@ -3,8 +3,6 @@ const router = require('express')();
 const Todos = require('./../models/todos');
 const _ = require('lodash');
 
-let userId = 1
-
 
 // GET editing todo
 // DONE
@@ -28,7 +26,7 @@ router.get('/add', (req, res, next) => {
     if (!userIds) {
       return next(new Error("500 NEED A USER FIRST"))
     }
-
+    
     userIds.forEach((id) => {
       userList += '<option value="user' + id + '">' + id + '</option>'
     })
@@ -60,13 +58,14 @@ router.get('/:id', (req, res, next) => {
     }
     res.format({
       html: () => { // Prepare content
-        let content = '<table class="table"><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
+        let content = '<table class="table"><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th><th>userID</th></tr>'
         content += '<tr>'
         content += '<td>' + todo['id'] + '</td>'
         content += '<td>' + todo['name'] + '</td>'
         content += '<td>' + todo['completion'] + '</td>'
         content += '<td>' + todo['createdAt'] + '</td>'
         content += '<td>' + todo['updatedAt'] + '</td>'
+        content += '<td>' + todo['userId'] + '</td>'
         content += '</tr>'
         content += '</table>'
 
@@ -125,7 +124,7 @@ router.patch('/:id', (req, res, next) => {
 
 
 // DELETE a todo
-//DONE
+// DONE
 router.delete('/:id', (req, res, next) => {
   if (!req.params.id) {
     return next(new Error("404 NOT FOUND"))
@@ -157,7 +156,7 @@ router.delete('/:id', (req, res, next) => {
 // ADD a new todo
 // DONE
 router.post('/', (req, res, next) => {
-  Todos.create([req.body.message, req.body.completion, userId])
+  Todos.create([req.body.name, req.body.completion, req.body.userId])
   .then((todo) => {
     res.format({
       html: () => {
@@ -185,7 +184,7 @@ router.get('/', (req, res, next) => {
 
     res.format({
       html: () => { // Prepare content
-        let content = '<table class="table"><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
+        let content = '<table class="table"><tr><th>ID</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th><th>userID</th></tr>'
         
         todos.forEach((todo) => {
           content += '<tr>'
@@ -194,10 +193,12 @@ router.get('/', (req, res, next) => {
           content += '<td>' + todo['completion'] + '</td>'
           content += '<td>' + todo['createdAt'] + '</td>'
           content += '<td>' + todo['updatedAt'] + '</td>'
+          content += '<td>' + todo['userId'] + '</td>'
           content += '</tr>'
         })
         
         content += '</table>'
+
         res.render("index", {  
             title: 'Todolist',
             content: content
@@ -214,7 +215,8 @@ router.get('/', (req, res, next) => {
   })
 })
 
-
+// Middleware 404
+// DONE
 router.use((err, req, res, next) => {
   res.format({
     html: () => {
