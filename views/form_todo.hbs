@@ -22,11 +22,14 @@
                     <option value="Done">Done</option>
                 </select>
             </div>
+            {{#if userList}}
             <div class="form-group">
+                <label for="userid">UserID :</label>
                 <select class="form-control" name="userId" id="userId">
                     {{{userList}}}
                 </select>
             </div>
+            {{/if}}
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>

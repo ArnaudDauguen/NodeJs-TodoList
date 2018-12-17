@@ -84,7 +84,7 @@ router.get('/:id', (req, res, next) => {
     res.format({
       html: () => { // Prepare content
 
-        let content = '<table class="table"><tr><th>Id</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>createdAt</th><th>updatedAt</th></tr>'
+        let content = '<table class="table"><tr><th>ID</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>createdAt</th><th>updatedAt</th></tr>'
         content += '<tr>'
         content += '<td>' + user['id'] + '</td>'
         content += '<td>' + user['username'] + '</td>'
@@ -97,7 +97,8 @@ router.get('/:id', (req, res, next) => {
         content += '</table>'
 
         res.render("show", {  
-          title: 'User ' + user['username'],
+          title: 'Show user ' + user['username'],
+          h1Title: "User " + user['username'],
           content: content
         })
       },
@@ -190,7 +191,7 @@ router.delete('/:id', (req, res, next) => {
 
 
 // CREATE users
-// WIP
+// DONE
 router.post('/', (req, res, next) => {
   let promise = Promise.resolve()
   .then(async () => {
@@ -261,7 +262,8 @@ router.get('/', (req, res, next) => {
   })
 })
 
-
+// Middleware 404
+// DONE
 router.use((err, req, res, next) => {
   res.format({
     html: () => {
@@ -273,7 +275,7 @@ router.use((err, req, res, next) => {
     json: () => {
       console.log("error : " + err)
       res.json({
-        message: "error 500",
+        message: "Error 500",
         description: "Server Error"
       })
     }
