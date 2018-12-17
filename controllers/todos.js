@@ -13,6 +13,7 @@ router.get('/:id/edit', (req, res, next) => {
     title: "Edit a todo",
     formTitle: "Edit todo n°" + req.params.id,
     todo: todo,
+    name: todo.name,
     idAndMethod: "/" + req.params.id + "?_method=PATCH"
   })
 })
@@ -28,8 +29,8 @@ router.get('/add', (req, res, next) => {
       return next(new Error("500 NEED A USER FIRST"))
     }
 
-    userIds.forEach((id) => {
-      userList += '<option value="user' + id.id + '">' + id.id + '</option>'
+    userIds.forEach((userId) => {
+      userList += '<option value="user' + userId.id + '">' + userId.id + '</option>'
     })
 
     res.render("form_todo", {

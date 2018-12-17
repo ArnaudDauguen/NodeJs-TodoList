@@ -6,7 +6,8 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 
-//GET todos for UserId
+// GET todos for UserId
+// DONE
 router.get('/:id/todos', (req, res, next) => {
   if (req.params.id === undefined || req.params.id === null) {
     return next(new Error("404 NOT FOUND"))
@@ -48,7 +49,7 @@ router.get('/:id/todos', (req, res, next) => {
 
 
 // GET editing User
-// WIP
+// DONE
 router.get('/:id/edit', (req, res, next) => { 
   const user = Users.findOneUser(req.params.id)
   res.render("form_user", {
