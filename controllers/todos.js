@@ -26,9 +26,9 @@ router.get('/add', (req, res, next) => {
     if (!userIds) {
       return next(new Error("500 NEED A USER FIRST"))
     }
-    
+
     userIds.forEach((id) => {
-      userList += '<option value="user' + id + '">' + id + '</option>'
+      userList += '<option value="user' + id.id + '">' + id.id + '</option>'
     })
 
     res.render("form_todo", {

@@ -16,7 +16,7 @@ module.exports = {
     return db.all("SELECT rowid AS id, * FROM users")
   },
   getAllUserIds() {
-    return db.all("SELECT rowid AD id FROM users")
+    return db.all("SELECT rowid AS id FROM users")
   },
   findOne(id) {
     return db.get("SELECT rowid AS id, * FROM todos WHERE rowid = ?", id)
