@@ -53,6 +53,7 @@ router.get('/:id/edit', (req, res, next) => {
   const user = Users.findOneUser(req.params.id)
   res.render("form_user", {
     title: "Patch a user",
+    formTitle: "Edit user n°" + req.params.id,
     todo: user,
     idAndMethod: "/" + req.params.id + "?_method=PATCH"
   })
@@ -63,6 +64,7 @@ router.get('/:id/edit', (req, res, next) => {
 router.get('/add', (req, res, next) => {
     res.render("form_user", {
     title: "Create a user",
+    formTitle: "Add a user",
     idAndMethod: "/?_method=POST"
     })
 })

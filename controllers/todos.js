@@ -12,7 +12,8 @@ router.get('/:id/edit', (req, res, next) => {
   const todo = Todos.findOne(req.params.id)
   //gerer todo inexistatne
   res.render("form_todo", {
-    title: "Patch a todo",
+    title: "Edit a todo",
+    formTitle: "Edit todo n°" + req.params.id,
     todo: todo,
     idAndMethod: "/" + req.params.id + "?_method=PATCH"
   })
@@ -29,12 +30,13 @@ router.get('/add', (req, res, next) => {
       return next(new Error("500 NEED A USER FIRST"))
     }
 
-    userIds.foreach((id) => {
+    userIds.forEach((id) => {
       userList += '<option value="user' + id + '">' + id + '</option>'
     })
 
     res.render("form_todo", {
       title: "Add a todo",
+      formTitle: "Create a Todo",
       idAndMethod: "/?_method=POST",
       userList : userList
     })
@@ -70,7 +72,8 @@ router.get('/:id', (req, res, next) => {
         content += '</table>'
 
         res.render("show", {  
-            title: 'Todo List',
+            title: 'Todo n°' + todo['id'],
+            h1Title: 'Todo n°' + todo['id'],
             content: content
         })
       },
@@ -197,7 +200,7 @@ router.get('/', (req, res, next) => {
         
         content += '</table>'
         res.render("index", {  
-            title: 'Todo List',
+            title: 'Todolist',
             content: content
         })
       },
@@ -216,7 +219,7 @@ router.get('/', (req, res, next) => {
 router.use((err, req, res, next) => {
   res.format({
     html: () => {
-      console.log("error : " + err)
+      console.log("error todo : " + err)
       res.render("error404", {
         error: err
       })
