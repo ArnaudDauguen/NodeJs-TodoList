@@ -7,15 +7,20 @@ const _ = require('lodash');
 // GET editing todo
 // DONE
 router.get('/:id/edit', (req, res, next) => {
-  const todo = Todos.findOne(req.params.id)
-  //gerer todo inexistatne
-  res.render("form_todo", {
-    title: "Edit a todo",
-    formTitle: "Edit todo n°" + req.params.id,
-    todo: todo,
-    name: todo.name,
-    idAndMethod: "/" + req.params.id + "?_method=PATCH"
+  Todos.findOne(req.params.id)
+  .then((todo) => {
+    res.render("form_todo", {
+      title: "Edit a todo",
+      formTitle: "Edit todo n°" + req.params.id,
+      todo: todo,
+      name: todo.name,
+      idAndMethod: "/" + req.params.id + "?_method=PATCH"
+    })
   })
+  .catch((err) => {
+    return next(new Error("404 NOT FOUND"))
+  })
+  //gerer todo inexistante
 })
 
 
