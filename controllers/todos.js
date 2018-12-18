@@ -230,16 +230,16 @@ router.get('/', (req, res, next) => {
 router.use((err, req, res, next) => {
   res.format({
     html: () => {
-      console.log("error todo : " + err)
+      console.log(err)
       res.render("error404", {
         error: err
       })
     },
     json: () => {
-      console.log("error : " + err)
+      console.log(err)
       res.json({
-        message: "error 500",
-        description: "Server Error"
+        message: err.message,
+        description: "An error occured"
       })
     }
   })
