@@ -14,7 +14,9 @@ router.get('/:id/todos', (req, res, next) => {
   }
   Users.findOneUser(req.params.id)
   .then((user) =>{
-
+    if (!user) {
+      return next(new Error("404 NOT FOUND"))
+    }
     Users.getAllTodosForUserId(req.params.id)
     .then((todos) => {
       res.format({
