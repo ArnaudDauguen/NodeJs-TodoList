@@ -1,6 +1,6 @@
 const router = require('express')();
 //const router = require('express').Router();
-const Users = require('./../models/todos');
+const Users = require('./../models/users');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
