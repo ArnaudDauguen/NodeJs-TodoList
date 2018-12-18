@@ -204,6 +204,9 @@ router.post('/', (req, res, next) => {
     return crypt
   })
   .then((encryptedPassword) => {
+    if (req.body.lastname || req.body.username || encryptedPassword || req.body.email == '') {
+      return next(new Error('Veuillez renseigner tous les champs'))
+    }
     Users.createUser([req.body.firstname, req.body.lastname, req.body.username, encryptedPassword, req.body.email])
     .then(() => {})
     res.format({
