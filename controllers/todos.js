@@ -249,3 +249,5 @@ router.use((err, req, res, next) => {
 
 
 module.exports = router
+
+/* COPYRIGHT © 2018 ARNAUD DAUGUEN GANS QUENTIN - TOUT DROITS RÉSERVÉS */
