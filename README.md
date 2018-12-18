@@ -28,7 +28,7 @@ C'est une todolist qui permet à plusieurs personnes d'ajouter des todos, de les
   - JSON: {message : 'sucess'}
   - HTML: redirect sur index.hbs
   
-- DELETE /ressources/:id
+- DELETE /ressources/:id *
   - JSON: {message : 'sucess'}
   - HTML: redirect sur index.hbs
   
@@ -41,3 +41,5 @@ C'est une todolist qui permet à plusieurs personnes d'ajouter des todos, de les
 - GET /users/:id/todos
   - JSON: renvoi les todos de l'utilisateur
   - HTML: affiche un tableau des todos de l'utilisateur
+  
+* :*Pour supprimer une route il faut passer par postman
