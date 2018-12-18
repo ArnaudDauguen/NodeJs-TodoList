@@ -25,7 +25,7 @@ module.exports = {
     return db.get("SELECT rowid AS id, * FROM users WHERE rowid = ?", id)
   },
   async create(params) {
-
+    params[2] = parseInt(params[2])
     const data = _.values(params)
 
     const { lastID } = await db.run("INSERT INTO todos VALUES(?, ?, date('now'), date('now'), ?)", data)
@@ -33,7 +33,6 @@ module.exports = {
     return this.findOne(lastID)
   },
   async createUser(params) {
-
     const data = _.values(params)
 
     const { lastID } = await db.run("INSERT INTO users VALUES(?, ?, ?, ?, ?, date('now'), date('now'))", data)
