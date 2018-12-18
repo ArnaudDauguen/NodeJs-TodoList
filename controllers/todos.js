@@ -224,6 +224,7 @@ router.get('/', (req, res, next) => {
           content += '<td>' + todo['createdAt'] + '</td>'
           content += '<td>' + todo['updatedAt'] + '</td>'
           content += '<td>' + todo['userId'] + '</td>'
+          content += '<td> <form action="/todos/'+todo['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger">Supprimer</button> </form> </td>'
           content += '</tr>'
         })
         

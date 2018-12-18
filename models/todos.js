@@ -8,6 +8,9 @@ module.exports = {
   findOne(id) {
     return db.get("SELECT rowid AS id, * FROM todos WHERE rowid = ?", id)
   },
+  delete(id) {
+    return db.run("DELETE FROM todos WHERE rowid = ?", id)
+  },
   async create(params) {
     params[2] = parseInt(params[2])
     const data = _.values(params)
