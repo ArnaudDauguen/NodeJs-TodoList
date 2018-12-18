@@ -13,7 +13,7 @@ router.get('/:id/edit', (req, res, next) => {
       return next(new Error("404 NOT FOUND"))
     }
 
-    //objet pour connaitre la completion de la todo (pour le formulaire)
+    // Object to know the completion of the todo
     let completion = {
       todo: undefined,
       inProgress: undefined,
