@@ -12,10 +12,34 @@ router.get('/:id/edit', (req, res, next) => {
     if (!todo) {
       return next(new Error("404 NOT FOUND"))
     }
+
+    //objet pour connaitre la completion de la todo (pour le formulaire)
+    let completion = {
+      todo: undefined,
+      inProgress: undefined,
+      done: undefined
+    }
+
+    if(todo.completion === "Todo"){
+      completion.todo = true
+    }
+    if(todo.completion === "In Progress"){
+      completion.inProgress = true
+    }
+    if(todo.completion === "Done"){
+      completion.done = true
+    }
+console.log(todo)
+console.log(completion)
+
     res.render("form_todo", {
       title: "Edit a todo",
       formTitle: "Edit todo n°" + req.params.id,
       todo: todo,
+<<<<<<< HEAD
+=======
+      completion: completion,
+>>>>>>> 1f960ffb6b030325fd5714da516c66a65cc35ba2
       idAndMethod: "/" + req.params.id + "?_method=PATCH"
     })
   })
