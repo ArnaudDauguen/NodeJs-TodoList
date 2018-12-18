@@ -51,12 +51,20 @@ router.get('/:id/todos', (req, res, next) => {
 // GET editing User
 // DONE
 router.get('/:id/edit', (req, res, next) => { 
-  const user = Users.findOneUser(req.params.id)
-  res.render("form_user", {
-    title: "Patch a user",
-    formTitle: "Edit user n°" + req.params.id,
-    todo: user,
-    idAndMethod: "/" + req.params.id + "?_method=PATCH"
+  Users.findOneUser(req.params.id)
+  .then((user) => {
+    if (!user) {
+      return next(new Error("404 NOT FOUND"))
+    }
+    res.render("form_user", {
+      title: "Patch a user",
+      formTitle: "Edit user n°" + req.params.id,
+      user: user,
+      idAndMethod: "/" + req.params.id + "?_method=PATCH"
+    })
+  })
+  .catch((err) => {
+    return next(new Error("404 NOT FOUND"))
   })
 })
 
@@ -146,7 +154,7 @@ router.patch('/:id', (req, res, next) => {
   .then((user) => {
     res.format({
       html: () => {
-        res.redirect(301, '/todos')
+        res.redirect(301, '/users')
       },
       json: () => {
         res.json({message : 'sucess'});
@@ -204,7 +212,7 @@ router.post('/', (req, res, next) => {
     return crypt
   })
   .then((encryptedPassword) => {
-    if (req.body.lastname || req.body.username || encryptedPassword || req.body.email == '') {
+    if (!req.body.lastname || !req.body.firstname || !req.body.username || !encryptedPassword || !req.body.email) {
       return next(new Error('Veuillez renseigner tous les champs'))
     }
     Users.createUser([req.body.firstname, req.body.lastname, req.body.username, encryptedPassword, req.body.email])

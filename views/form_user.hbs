@@ -11,25 +11,29 @@
     <form action="/users{{idAndMethod}}", method="POST">
         <div class="container mt-5">
             <div class="form-group">
-                <label for="username">Username :</label>
-                <input class="form-control" id="username" name="username" type="text" value=""/>
+                <label for="firstname">Firstname :</label>
+                <input class="form-control" id="firstname" name="firstname" type="text" value="{{#if user.firstname}}{{user.firstname}}{{/if}}"/>
             </div>
             <div class="form-group">
                 <label for="lastname">Lastname :</label>
-                <input class="form-control" id="lastname" name="lastname" type="text" value=""/>
+                <input class="form-control" id="lastname" name="lastname" type="text" value="{{#if user.lastname}}{{user.lastname}}{{/if}}"/>
             </div>
             <div class="form-group">
-                <label for="firstname">Firstname :</label>
-                <input class="form-control" id="firstname" name="firstname" type="text" value=""/>
-            </div>
-            <div class="form-group">
-                <label for="password">Password :</label>
-                <input class="form-control" id="password" name="password" type="password" value=""/>
+                <label for="username">Username :</label>
+                <input class="form-control" id="username" name="username" type="text" value="{{#if user.username}}{{user.username}}{{/if}}"/>
             </div>
             <div class="form-group">
                 <label for="email">Email :</label>
-                <input class="form-control" id="email" name="email" type="email" value=""/>
+                <input class="form-control" id="email" name="email" type="email" value="{{#if user.email}}{{user.email}}{{/if}}"/>
             </div>
+            {{#if user}}
+            <!--On critique pas ça marche :p -->
+            {{else}}
+            <div class="form-group">
+                <label for="password">Password :</label>
+                <input class="form-control" id="password" name="password" type="password" value="{{#if user.password}}{{user.password}}{{/if}}"/>
+            </div>
+            {{/if}}
              <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>

@@ -9,6 +9,9 @@ const _ = require('lodash');
 router.get('/:id/edit', (req, res, next) => {
   Todos.findOne(req.params.id)
   .then((todo) => {
+    if (!todo) {
+      return next(new Error("404 NOT FOUND"))
+    }
     res.render("form_todo", {
       title: "Edit a todo",
       formTitle: "Edit todo n°" + req.params.id,
@@ -20,7 +23,6 @@ router.get('/:id/edit', (req, res, next) => {
   .catch((err) => {
     return next(new Error("404 NOT FOUND"))
   })
-  //gerer todo inexistante
 })
 
 
