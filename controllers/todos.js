@@ -7,6 +7,9 @@ const _ = require('lodash');
 // GET editing todo
 // DONE
 router.get('/:id/edit', (req, res, next) => {
+  if (req.params.id % 1 !== 0) {
+    return next(new Error("404 NOT FOUND"))
+  }
   Todos.findOne(req.params.id)
   .then((todo) => {
     if (!todo) {
@@ -75,7 +78,7 @@ router.get('/add', (req, res, next) => {
 // GET a todo
 // DONE
 router.get('/:id', (req, res, next) => {
-  if (!req.params.id) {
+  if (req.params.id % 1 !== 0) {
     return next(new Error("404 NOT FOUND"))
   }
   Todos.findOne(req.params.id)
@@ -117,8 +120,8 @@ router.get('/:id', (req, res, next) => {
 // EDIT a todo
 // DONE
 router.patch('/:id', (req, res, next) => {
-  if (!req.params.id) {
-    return res.status(404).send('NOT FOUND')
+  if (req.params.id % 1 !== 0) {
+    return next(new Error("404 NOT FOUND"))
   }
 
   let changes = {}
@@ -153,7 +156,7 @@ router.patch('/:id', (req, res, next) => {
 // DELETE a todo
 // DONE
 router.delete('/:id', (req, res, next) => {
-  if (!req.params.id) {
+  if (req.params.id % 1 !== 0) {
     return next(new Error("404 NOT FOUND"))
   }
   Todos.findOne(req.params.id)
@@ -183,7 +186,7 @@ router.delete('/:id', (req, res, next) => {
 // ADD a new todo
 // DONE
 router.post('/', (req, res, next) => {
-  if (req.body.name == '') {
+  if (!req.body.name) {
     return next(new Error("Veuillez entrer un nom pour la todo"))
   }
   Todos.create([req.body.name, req.body.completion, req.body.userId])
