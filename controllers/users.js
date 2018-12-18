@@ -53,6 +53,7 @@ router.get('/:id/todos', (req, res, next) => {
 router.get('/:id/edit', (req, res, next) => { 
   Users.findOneUser(req.params.id)
   .then((user) => {
+    console.log(user)
     if (!user) {
       return next(new Error("404 NOT FOUND"))
     }
