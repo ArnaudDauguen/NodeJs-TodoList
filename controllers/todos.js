@@ -36,10 +36,7 @@ console.log(completion)
       title: "Edit a todo",
       formTitle: "Edit todo n°" + req.params.id,
       todo: todo,
-<<<<<<< HEAD
-=======
       completion: completion,
->>>>>>> 1f960ffb6b030325fd5714da516c66a65cc35ba2
       idAndMethod: "/" + req.params.id + "?_method=PATCH"
     })
   })
