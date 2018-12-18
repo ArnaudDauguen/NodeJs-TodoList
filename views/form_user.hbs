@@ -26,14 +26,14 @@
                 <label for="email">Email :</label>
                 <input class="form-control" id="email" name="email" type="email" value="{{#if user.email}}{{user.email}}{{/if}}"/>
             </div>
-            {{#if user}}
-            <!--On critique pas ça marche :p -->
-            {{else}}
             <div class="form-group">
                 <label for="password">Password :</label>
-                <input class="form-control" id="password" name="password" type="password" value="{{#if user.password}}{{user.password}}{{/if}}"/>
+                <input class="form-control" id="password" name="password" type="password" value=""/>
             </div>
-            {{/if}}
+            <div class="form-group">
+                <label for="password2">Confirm Password :</label>
+                <input class="form-control" id="password2" name="password2" type="password" value=""/>
+            </div>
              <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>

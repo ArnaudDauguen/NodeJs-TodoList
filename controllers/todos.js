@@ -18,11 +18,7 @@ router.get('/:id/edit', (req, res, next) => {
     }
 
     // Object to know the completion of the todo
-    let completion = {
-      todo: undefined,
-      inProgress: undefined,
-      done: undefined
-    }
+    let completion = {}
 
     if(todo.completion === "Todo"){
       completion.todo = true
@@ -54,7 +50,8 @@ router.get('/add', (req, res, next) => {
   let userList = ''
   Users.getAllUserIds()
   .then((userIds) => {
-    if (!userIds) {
+    console.log(userIds)
+    if (userIds.length <= 0) {
       return next(new Error("500 NEED A USER FIRST"))
     }
 
@@ -228,6 +225,8 @@ router.get('/', (req, res, next) => {
           content += '<td>' + todo['createdAt'] + '</td>'
           content += '<td>' + todo['updatedAt'] + '</td>'
           content += '<td>' + todo['userId'] + '</td>'
+          content += '<td> <form action="/todos/'+todo['id']+'/edit/?_method=GET", method="GET"> <button type="submit" class="btn">Modifier</button> </form> </td>'
+          content += '<td> <form action="/todos/'+todo['id']+'/?_method=GET", method="GET"> <button type="submit" class="btn">Voir</button> </form> </td>'
           content += '<td> <form action="/todos/'+todo['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger">Supprimer</button> </form> </td>'
           content += '</tr>'
         })

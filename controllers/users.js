@@ -31,6 +31,7 @@ router.get('/:id/todos', (req, res, next) => {
             content += '<td>' + todo['completion'] + '</td>'
             content += '<td>' + todo['createdAt'] + '</td>'
             content += '<td>' + todo['updatedAt'] + '</td>'
+            content += '<td> <form action="/todos/'+todo['id']+'/edit/?_method=GET", method="GET"> <button type="submit" class="btn">Modifier</button> </form> </td>'
             content += '<td> <form action="/todos/'+todo['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger">Supprimer</button> </form> </td>'
             content += '</tr>'
           })
@@ -139,6 +140,9 @@ router.patch('/:id', (req, res, next) => {
   if (req.params.id % 1 !== 0) {
     return next(new Error("404 NOT FOUND"))
   }
+  if (!req.body.lastname && !req.body.firstname && !req.body.username && !req.body.password && !req.body.password2 && !req.body.email) {
+    return next(new Error('Pour Editer il faut au moins remplir un champ en fait...'))
+  }
 
   let changes = {}
 
@@ -154,8 +158,12 @@ router.patch('/:id', (req, res, next) => {
   if (req.body.username) {
     changes.username = req.body.username
   }
-  if (req.body.passsword) {
-    changes.passsword = req.body.passsword
+  if (req.body.password) {
+    if (req.body.password2 === req.body.password) {
+      changes.password = req.body.password
+    }else{
+      return next(new Error('Mots de passe differents'))
+    }
   }
 
   changes.id = req.params.id // add id
@@ -212,6 +220,12 @@ router.delete('/:id', (req, res, next) => {
 // CREATE users
 // DONE
 router.post('/', (req, res, next) => {
+  if (!req.body.lastname || !req.body.firstname || !req.body.username || !req.body.password || !req.body.password2 || !req.body.email) {
+    return next(new Error('Veuillez renseigner tous les champs'))
+  }
+  if (req.body.password != req.body.password2) {
+    return next(new Error('Mots de passe differents'))
+  }
   let promise = Promise.resolve()
   .then(async () => {
     let crypt = ''
@@ -222,9 +236,6 @@ router.post('/', (req, res, next) => {
     return crypt
   })
   .then((encryptedPassword) => {
-    if (!req.body.lastname || !req.body.firstname || !req.body.username || !encryptedPassword || !req.body.email) {
-      return next(new Error('Veuillez renseigner tous les champs'))
-    }
     Users.createUser([req.body.firstname, req.body.lastname, req.body.username, encryptedPassword, req.body.email])
     .then(() => {})
     res.format({
@@ -263,6 +274,8 @@ router.get('/', (req, res, next) => {
           content += '<td>' + user['email'] + '</td>'
           content += '<td>' + user['createdAt'] + '</td>'
           content += '<td>' + user['updatedAt'] + '</td>'
+          content += '<td> <form action="/users/'+user['id']+'/edit/?_method=GET", method="GET"> <button type="submit" class="btn">Modifier</button> </form> </td>'
+          content += '<td> <form action="/users/'+user['id']+'/todos/?_method=GET", method="GET"> <button type="submit" class="btn">Voir les Todos</button> </form> </td>'
           content += '<td> <form action="/users/'+user['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger">Supprimer</button> </form> </td>'
           content += '</tr>'
         })
