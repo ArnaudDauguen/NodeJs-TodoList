@@ -16,7 +16,6 @@ router.get('/:id/edit', (req, res, next) => {
       title: "Edit a todo",
       formTitle: "Edit todo n°" + req.params.id,
       todo: todo,
-      name: todo.name,
       idAndMethod: "/" + req.params.id + "?_method=PATCH"
     })
   })
