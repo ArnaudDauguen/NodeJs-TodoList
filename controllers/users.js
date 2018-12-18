@@ -9,37 +9,43 @@ const saltRounds = 10;
 // GET todos for UserId
 // DONE
 router.get('/:id/todos', (req, res, next) => {
-  if (req.params.id === undefined || req.params.id === null) {
+  if (req.params.id % 1 !== 0) {
     return next(new Error("404 NOT FOUND"))
   }
-  Users.getAllTodosForUserId(req.params.id)
-  .then((todos) => {
-    res.format({
-      html: () => { // Prepare content
-        
-        let content = '<table class="table"><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
-        
-        todos.forEach((todo) => {
-          content += '<tr>'
-          content += '<td>' + todo['id'] + '</td>'
-          content += '<td>' + todo['name'] + '</td>'
-          content += '<td>' + todo['completion'] + '</td>'
-          content += '<td>' + todo['createdAt'] + '</td>'
-          content += '<td>' + todo['updatedAt'] + '</td>'
-          content += '<td> <form action="/users/'+todo['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger">Supprimer</button> </form> </td>'
-          content += '</tr>'
-        })
-
-        content += '</table>'
-
-        res.render("index", {  
-            title: 'Todo List for User: ' + req.params.id,
-            content: content
-        })
-      },
-      json: () => {
-          res.json(todos)
-      }
+  Users.findOneUser(req.params.id)
+  .then((user) =>{
+    if (!user) {
+      return next(new Error("404 NOT FOUND"))
+    }
+    Users.getAllTodosForUserId(req.params.id)
+    .then((todos) => {
+      res.format({
+        html: () => { // Prepare content
+          
+          let content = '<table class="table"><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
+          
+          todos.forEach((todo) => {
+            content += '<tr>'
+            content += '<td>' + todo['id'] + '</td>'
+            content += '<td>' + todo['name'] + '</td>'
+            content += '<td>' + todo['completion'] + '</td>'
+            content += '<td>' + todo['createdAt'] + '</td>'
+            content += '<td>' + todo['updatedAt'] + '</td>'
+            content += '<td> <form action="/users/'+todo['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger">Supprimer</button> </form> </td>'
+            content += '</tr>'
+          })
+  
+          content += '</table>'
+  
+          res.render("index", {  
+              title: 'Todo List for User: ' + req.params.id,
+              content: content
+          })
+        },
+        json: () => {
+            res.json(todos)
+        }
+      })
     })
   })
   .catch((err) => {
@@ -51,10 +57,12 @@ router.get('/:id/todos', (req, res, next) => {
 
 // GET editing User
 // DONE
-router.get('/:id/edit', (req, res, next) => { 
+router.get('/:id/edit', (req, res, next) => {
+  if (req.params.id % 1 !== 0) {
+    return next(new Error("404 NOT FOUND"))
+  }
   Users.findOneUser(req.params.id)
   .then((user) => {
-    console.log(user)
     if (!user) {
       return next(new Error("404 NOT FOUND"))
     }
@@ -84,7 +92,7 @@ router.get('/add', (req, res, next) => {
 // GET a user
 // DONE
 router.get('/:id', (req, res, next) => {
-  if (!req.params.id) {
+  if (req.params.id % 1 !== 0) {
     return next(new Error("404 NOT FOUND"))
   }
   Users.findOneUser(req.params.id)
@@ -128,7 +136,7 @@ router.get('/:id', (req, res, next) => {
 // EDIT a user
 // DONE
 router.patch('/:id', (req, res, next) => {
-  if (!req.params.id) {
+  if (req.params.id % 1 !== 0) {
     return next(new Error("404 NOT FOUND"))
   }
 
@@ -173,7 +181,7 @@ router.patch('/:id', (req, res, next) => {
 // DELETE a user
 // DONE
 router.delete('/:id', (req, res, next) => {
-  if (!req.params.id) {
+  if (req.params.id % 1 !== 0) {
     return next(new Error("404 NOT FOUND"))
   }
   Users.findOneUser(req.params.id)

@@ -19,6 +19,9 @@ module.exports = {
 
     return this.findOne(lastID)
   },
+  deleteUser(id) {
+    return db.run("DELETE FROM todos WHERE rowid = ?", id)
+  },
   async update(params) {
     let string = ''
 
