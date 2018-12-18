@@ -12,33 +12,37 @@ router.get('/:id/todos', (req, res, next) => {
   if (req.params.id === undefined || req.params.id === null) {
     return next(new Error("404 NOT FOUND"))
   }
-  Users.getAllTodosForUserId(req.params.id)
-  .then((todos) => {
-    res.format({
-      html: () => { // Prepare content
-        
-        let content = '<table class="table"><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
-        
-        todos.forEach((todo) => {
-          content += '<tr>'
-          content += '<td>' + todo['id'] + '</td>'
-          content += '<td>' + todo['name'] + '</td>'
-          content += '<td>' + todo['completion'] + '</td>'
-          content += '<td>' + todo['createdAt'] + '</td>'
-          content += '<td>' + todo['updatedAt'] + '</td>'
-          content += '</tr>'
-        })
+  Users.findOneUser(req.params.id)
+  .then((user) =>{
 
-        content += '</table>'
-
-        res.render("index", {  
-            title: 'Todo List for User: ' + req.params.id,
-            content: content
-        })
-      },
-      json: () => {
-          res.json(todos)
-      }
+    Users.getAllTodosForUserId(req.params.id)
+    .then((todos) => {
+      res.format({
+        html: () => { // Prepare content
+          
+          let content = '<table class="table"><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
+          
+          todos.forEach((todo) => {
+            content += '<tr>'
+            content += '<td>' + todo['id'] + '</td>'
+            content += '<td>' + todo['name'] + '</td>'
+            content += '<td>' + todo['completion'] + '</td>'
+            content += '<td>' + todo['createdAt'] + '</td>'
+            content += '<td>' + todo['updatedAt'] + '</td>'
+            content += '</tr>'
+          })
+  
+          content += '</table>'
+  
+          res.render("index", {  
+              title: 'Todo List for User: ' + req.params.id,
+              content: content
+          })
+        },
+        json: () => {
+            res.json(todos)
+        }
+      })
     })
   })
   .catch((err) => {
@@ -53,7 +57,6 @@ router.get('/:id/todos', (req, res, next) => {
 router.get('/:id/edit', (req, res, next) => { 
   Users.findOneUser(req.params.id)
   .then((user) => {
-    console.log(user)
     if (!user) {
       return next(new Error("404 NOT FOUND"))
     }

@@ -29,8 +29,6 @@ router.get('/:id/edit', (req, res, next) => {
     if(todo.completion === "Done"){
       completion.done = true
     }
-console.log(todo)
-console.log(completion)
 
     res.render("form_todo", {
       title: "Edit a todo",
