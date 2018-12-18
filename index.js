@@ -37,3 +37,5 @@ api.get('*', (req, res, next) => {
 api.listen(3000)
 
 console.log("http://localhost:3000/")
+
+/* COPYRIGHT © 2018 ARNAUD DAUGUEN GANS QUENTIN - TOUT DROITS RÉSERVÉS */

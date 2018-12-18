@@ -20,7 +20,6 @@ router.get('/:id/edit', (req, res, next) => {
   .catch((err) => {
     return next(new Error("404 NOT FOUND"))
   })
-  //gerer todo inexistante
 })
 
 
@@ -247,3 +246,5 @@ router.use((err, req, res, next) => {
 
 
 module.exports = router
+
+/* COPYRIGHT © 2018 ARNAUD DAUGUEN GANS QUENTIN - TOUT DROITS RÉSERVÉS */
