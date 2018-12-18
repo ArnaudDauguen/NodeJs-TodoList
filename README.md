@@ -42,4 +42,4 @@ C'est une todolist qui permet à plusieurs personnes d'ajouter des todos, de les
   - JSON: renvoi les todos de l'utilisateur
   - HTML: affiche un tableau des todos de l'utilisateur
   
-* : *Pour supprimer une route il faut passer par postman*
+* : *Pour supprimer une todo ou un user il faut passer par postman*
