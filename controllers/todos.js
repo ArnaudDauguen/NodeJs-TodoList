@@ -35,7 +35,7 @@ router.get('/add', (req, res, next) => {
     }
 
     userIds.forEach((userId) => {
-      userList += '<option value="user' + userId.id + '">' + userId.id + '</option>'
+      userList += '<option value="' + userId.id + '">' + userId.id + '</option>'
     })
 
     res.render("form_todo", {
