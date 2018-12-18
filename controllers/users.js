@@ -31,7 +31,7 @@ router.get('/:id/todos', (req, res, next) => {
             content += '<td>' + todo['completion'] + '</td>'
             content += '<td>' + todo['createdAt'] + '</td>'
             content += '<td>' + todo['updatedAt'] + '</td>'
-            content += '<td> <form action="/users/'+todo['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger">Supprimer</button> </form> </td>'
+            content += '<td> <form action="/todos/'+todo['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger">Supprimer</button> </form> </td>'
             content += '</tr>'
           })
   
@@ -263,7 +263,7 @@ router.get('/', (req, res, next) => {
           content += '<td>' + user['email'] + '</td>'
           content += '<td>' + user['createdAt'] + '</td>'
           content += '<td>' + user['updatedAt'] + '</td>'
-          content += '<td> <form action="/users/'+todo['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger">Supprimer</button> </form> </td>'
+          content += '<td> <form action="/users/'+user['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger">Supprimer</button> </form> </td>'
           content += '</tr>'
         })
 

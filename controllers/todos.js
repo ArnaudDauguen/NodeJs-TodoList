@@ -1,6 +1,7 @@
 const router = require('express')();
 //const router = require('express').Router();
 const Todos = require('./../models/todos');
+const Users = require('./../models/users');
 const _ = require('lodash');
 
 
@@ -51,7 +52,7 @@ router.get('/:id/edit', (req, res, next) => {
 // DONE
 router.get('/add', (req, res, next) => {
   let userList = ''
-  Todos.getAllUserIds()
+  Users.getAllUserIds()
   .then((userIds) => {
     if (!userIds) {
       return next(new Error("500 NEED A USER FIRST"))
