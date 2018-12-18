@@ -163,6 +163,9 @@ router.delete('/:id', (req, res, next) => {
 // ADD a new todo
 // DONE
 router.post('/', (req, res, next) => {
+  if (req.body.name == '') {
+    return next(new Error("Veuillez entrer un nom pour la todo"))
+  }
   Todos.create([req.body.name, req.body.completion, req.body.userId])
   .then((todo) => {
     res.format({
