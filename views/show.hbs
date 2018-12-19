@@ -3,13 +3,15 @@
 <head>
     <title>{{title}}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <div class="container text-center mt-2">
+    <div class="container text-center mt-4">
       <h1>{{h1Title}}</h1>
     </div>
-    <div class="container mt-5">
+    <div class="container text-center mt-5 p-1">
       {{{content}}}
+      <a href="/todos"><button class="btn btn-dark btn-lg mt-4">Return to the todo manager</button></a>
     </div>
 </body>
 </html>

@@ -3,7 +3,7 @@ const _ = require('lodash')
 
 module.exports = {
   async getAllTodosForUserId(userId) {
-    userId = parseInt(userId)
+    userId = parseInt(userId) // Transform userId into INT
     if(!userId){
       return Promise.reject({ message: 'Could not find id' })
     }
@@ -48,4 +48,5 @@ module.exports = {
   },
 }
 
-/* COPYRIGHT © 2018 ARNAUD DAUGUEN GANS QUENTIN - TOUT DROITS RÉSERVÉS */
+
+/* COPYRIGHT © 2018 ARNAUD DAUGUEN GANS QUENTIN - ALL RIGHTS RESERVED */

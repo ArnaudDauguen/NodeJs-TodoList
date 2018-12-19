@@ -17,8 +17,7 @@ router.get('/:id/edit', (req, res, next) => {
       return next(new Error("404 NOT FOUND"))
     }
 
-    // Object to know the completion of the todo
-    let completion = {}
+    let completion = {}  // Object to know the completion of the todo
 
     if(todo.completion === "Todo"){
       completion.todo = true
@@ -86,7 +85,7 @@ router.get('/:id', (req, res, next) => {
     }
     res.format({
       html: () => { // Prepare content
-        let content = '<table class="table"><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th><th>userID</th></tr>'
+        let content = '<table class="table"><tr><th>ID</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th><th>userID</th></tr>'
         content += '<tr>'
         content += '<td>' + todo['id'] + '</td>'
         content += '<td>' + todo['name'] + '</td>'
@@ -122,7 +121,7 @@ router.patch('/:id', (req, res, next) => {
     return next(new Error("404 NOT FOUND"))
   }
 
-  let changes = {}
+  let changes = {} // Object to know the changes of the todo
 
   if (req.body.name) {
     changes.name = req.body.name
@@ -131,7 +130,7 @@ router.patch('/:id', (req, res, next) => {
     changes.completion = req.body.completion
   }
 
-  changes.id = req.params.id // add id
+  changes.id = req.params.id // Add id
 
   Todos.update(changes)
   .then((todo) => {
@@ -185,7 +184,7 @@ router.delete('/:id', (req, res, next) => {
 // DONE
 router.post('/', (req, res, next) => {
   if (!req.body.name) {
-    return next(new Error("Veuillez entrer un nom pour la todo"))
+    return next(new Error("Please enter a name for the todo"))
   }
   Todos.create([req.body.name, req.body.completion, req.body.userId])
   .then((todo) => {
@@ -204,6 +203,7 @@ router.post('/', (req, res, next) => {
     return next(err)
   })
 })
+
 
 // GET all todos
 // DONE
@@ -225,9 +225,9 @@ router.get('/', (req, res, next) => {
           content += '<td>' + todo['createdAt'] + '</td>'
           content += '<td>' + todo['updatedAt'] + '</td>'
           content += '<td>' + todo['userId'] + '</td>'
-          content += '<td> <form action="/todos/'+todo['id']+'/edit/?_method=GET", method="GET"> <button type="submit" class="btn">Modifier</button> </form> </td>'
-          content += '<td> <form action="/todos/'+todo['id']+'/?_method=GET", method="GET"> <button type="submit" class="btn">Voir</button> </form> </td>'
-          content += '<td> <form action="/todos/'+todo['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger">Supprimer</button> </form> </td>'
+          content += '<td> <form action="/todos/'+todo['id']+'/edit/?_method=GET", method="GET"> <button type="submit" class="btn btn-success"><i class="fa fa-pencil fa-lg mr-2"></i>Edit</button> </form> </td>'
+          content += '<td> <form action="/todos/'+todo['id']+'/?_method=GET", method="GET"> <button type="submit" class="btn btn-info"><i class="fa fa-eye fa-lg mr-2"></i>See</button> </form> </td>'
+          content += '<td> <form action="/todos/'+todo['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger"><i class="fa fa-trash-o fa-lg mr-2"></i>Remove</button> </form> </td>'
           content += '</tr>'
         })
         
@@ -248,6 +248,7 @@ router.get('/', (req, res, next) => {
     return next(err)
   })
 })
+
 
 // Middleware 404
 // DONE
@@ -272,4 +273,5 @@ router.use((err, req, res, next) => {
 
 module.exports = router
 
-/* COPYRIGHT © 2018 ARNAUD DAUGUEN GANS QUENTIN - TOUT DROITS RÉSERVÉS */
+
+/* COPYRIGHT © 2018 ARNAUD DAUGUEN GANS QUENTIN - ALL RIGHTS RESERVED */

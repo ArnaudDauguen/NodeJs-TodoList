@@ -22,7 +22,7 @@ router.get('/:id/todos', (req, res, next) => {
       res.format({
         html: () => { // Prepare content
           
-          let content = '<table class="table"><tr><th>Id</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
+          let content = '<table class="table"><tr><th>ID</th><th>Description</th><th>Completion</th><th>createdAt</th><th>updatedAt</th></tr>'
           
           todos.forEach((todo) => {
             content += '<tr>'
@@ -31,8 +31,8 @@ router.get('/:id/todos', (req, res, next) => {
             content += '<td>' + todo['completion'] + '</td>'
             content += '<td>' + todo['createdAt'] + '</td>'
             content += '<td>' + todo['updatedAt'] + '</td>'
-            content += '<td> <form action="/todos/'+todo['id']+'/edit/?_method=GET", method="GET"> <button type="submit" class="btn">Modifier</button> </form> </td>'
-            content += '<td> <form action="/todos/'+todo['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger">Supprimer</button> </form> </td>'
+            content += '<td> <form action="/todos/'+todo['id']+'/edit/?_method=GET", method="GET"> <button type="submit" class="btn btn-success"><i class="fa fa-pencil fa-lg mr-2"></i>Edit</button> </form> </td>'
+            content += '<td> <form action="/todos/'+todo['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger"><i class="fa fa-trash-o fa-lg mr-2"></i>Remove</button> </form> </td>'
             content += '</tr>'
           })
   
@@ -78,6 +78,7 @@ router.get('/:id/edit', (req, res, next) => {
     return next(new Error("404 NOT FOUND"))
   })
 })
+
 
 // GET adding User
 // DONE
@@ -141,7 +142,7 @@ router.patch('/:id', (req, res, next) => {
     return next(new Error("404 NOT FOUND"))
   }
   if (!req.body.lastname && !req.body.firstname && !req.body.username && !req.body.password && !req.body.password2 && !req.body.email) {
-    return next(new Error('Pour Editer il faut au moins remplir un champ en fait...'))
+    return next(new Error('To edit you must at least fill a field in fact...'))
   }
 
   let changes = {}
@@ -162,7 +163,7 @@ router.patch('/:id', (req, res, next) => {
     if (req.body.password2 === req.body.password) {
       changes.password = req.body.password
     }else{
-      return next(new Error('Mots de passe differents'))
+      return next(new Error('Different passwords !'))
     }
   }
 
@@ -216,15 +217,14 @@ router.delete('/:id', (req, res, next) => {
 })
 
 
-
 // CREATE users
 // DONE
 router.post('/', (req, res, next) => {
   if (!req.body.lastname || !req.body.firstname || !req.body.username || !req.body.password || !req.body.password2 || !req.body.email) {
-    return next(new Error('Veuillez renseigner tous les champs'))
+    return next(new Error('Please fill in all fields'))
   }
   if (req.body.password != req.body.password2) {
-    return next(new Error('Mots de passe differents'))
+    return next(new Error('Different passwords !'))
   }
   let promise = Promise.resolve()
   .then(async () => {
@@ -263,7 +263,7 @@ router.get('/', (req, res, next) => {
   {
     res.format({
       html: () => { // Prepare content
-        let content = '<table class="table"><tr><th>Id</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>createdAt</th><th>updatedAt</th></tr>'
+        let content = '<table class="table"><tr><th>ID</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>createdAt</th><th>updatedAt</th></tr>'
         
         users.forEach((user) => {
           content += '<tr>'
@@ -274,9 +274,9 @@ router.get('/', (req, res, next) => {
           content += '<td>' + user['email'] + '</td>'
           content += '<td>' + user['createdAt'] + '</td>'
           content += '<td>' + user['updatedAt'] + '</td>'
-          content += '<td> <form action="/users/'+user['id']+'/edit/?_method=GET", method="GET"> <button type="submit" class="btn">Modifier</button> </form> </td>'
-          content += '<td> <form action="/users/'+user['id']+'/todos/?_method=GET", method="GET"> <button type="submit" class="btn">Voir les Todos</button> </form> </td>'
-          content += '<td> <form action="/users/'+user['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger">Supprimer</button> </form> </td>'
+          content += '<td> <form action="/users/'+user['id']+'/edit/?_method=GET", method="GET"> <button type="submit" class="btn btn-success"><i class="fa fa-pencil fa-lg mr-2"></i>Edit</button> </form> </td>'
+          content += '<td> <form action="/users/'+user['id']+'/todos/?_method=GET", method="GET"> <button type="submit" class="btn btn-info"><i class="fa fa-eye fa-lg mr-2"></i>See all Todos</button> </form> </td>'
+          content += '<td> <form action="/users/'+user['id']+'/?_method=DELETE", method="POST"> <button type="submit" class="btn btn-danger"><i class="fa fa-trash-o fa-lg mr-2"></i>Remove</button> </form> </td>'
           content += '</tr>'
         })
 
@@ -297,6 +297,7 @@ router.get('/', (req, res, next) => {
     return next(err)
   })
 })
+
 
 // Middleware 404
 // DONE
@@ -321,4 +322,5 @@ router.use((err, req, res, next) => {
 
 module.exports = router
 
-/* COPYRIGHT © 2018 ARNAUD DAUGUEN GANS QUENTIN - TOUT DROITS RÉSERVÉS */
+
+/* COPYRIGHT © 2018 ARNAUD DAUGUEN GANS QUENTIN - ALL RIGHTS RESERVED */
